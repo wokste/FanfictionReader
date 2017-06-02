@@ -38,31 +38,45 @@ namespace FanfictionReader {
             return story;
         }
 
-        public void AddStory(Story story) {
+        public void SaveStory(Story story) {
+            if (story.PK == 0) {
+                InsertStory(story);
+            } else {
+                UpdateStory(story);
+            }
+                
+        }
+
+        private void InsertStory(Story story) {
             story.AddDate = DateTime.Now;
             story.LastReadDate = DateTime.Now;
 
-            using (var query = new SQLiteCommand("INSERT INTO Story (Id, Title, ChapterID, Host, AddDate, LastReadDate) VALUES (?,?,?,?,?,?)", conn)) {
-                query.Parameters.Add(story.Id);
-                query.Parameters.Add(story.Title);
-                query.Parameters.Add(story.ChapterID);
-                query.Parameters.Add(story.Host);
-                query.Parameters.Add(story.AddDate);
-                query.Parameters.Add(story.LastReadDate);
+            using (var query = new SQLiteCommand("INSERT INTO Story (Id, Title, ChapterID, Host, AddDate, LastReadDate) VALUES (@Id, @Title, @ChapterID, @Host, @AddDate, @LastReadDate)", conn)) {
+                query.Parameters.AddWithValue("@Id", story.Id);
+                query.Parameters.AddWithValue("@Title", story.Title);
+                query.Parameters.AddWithValue("@ChapterID", story.ChapterID);
+                query.Parameters.AddWithValue("@Host", story.Host);
+                query.Parameters.AddWithValue("@AddDate", story.AddDate);
+                query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
 
                 query.ExecuteNonQuery();
             }
+
+            using (var query = new SQLiteCommand("select last_insert_rowid()", conn)) {
+                story.PK = (long)query.ExecuteScalar();
+            }
         }
 
-        public void UpdateStory(Story story) {
+        private void UpdateStory(Story story) {
             story.LastReadDate = DateTime.Now;
-            using (var query = new SQLiteCommand("UPDATE Story SET LastReadDate = ?, ChapterID = ? WHERE PK = ?", conn)) {
-                query.Parameters.Add(story.LastReadDate);
-                query.Parameters.Add(story.ChapterID);
-                query.Parameters.Add(story.PK);
+            using (var query = new SQLiteCommand("UPDATE Story SET LastReadDate = @LastReadDate, ChapterID = @ChapterID WHERE PK = @PK", conn)) {
+                query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
+                query.Parameters.AddWithValue("@ChapterID", story.ChapterID);
+                query.Parameters.AddWithValue("@PK", story.PK);
 
                 query.ExecuteNonQuery();
             }
         }
+
     }
 }

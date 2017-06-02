@@ -9,6 +9,8 @@ namespace FanfictionReader {
         StoryController storyController;
         SQLiteConnection conn;
 
+        Story shownStory = null;
+
         public ReaderForm() {
             InitializeComponent();
 
@@ -30,6 +32,8 @@ namespace FanfictionReader {
         }
 
         private void openStory(Story story) {
+            this.shownStory = story;
+
             if (story == null) {
                 storyReader.Navigate("about:blank");
                 this.Text = "FanfictionReader";
@@ -45,6 +49,32 @@ namespace FanfictionReader {
             openStory(story);
         }
 
+        private void addStoryMenuClick(object sender, EventArgs e) {
+            var frm = new NewStoryForm(storyController, null);
+            frm.Show();
+        }
 
+        private void previousChapterMenuClick(object sender, EventArgs e) {
+            if (shownStory.ChapterID <= 1)
+                return;
+
+            shownStory.ChapterID--;
+            openStory(shownStory);
+            storyController.SaveStory(shownStory);
+        }
+
+        private void nextChapterMenuClick(object sender, EventArgs e) {
+            shownStory.ChapterID++;
+            openStory(shownStory);
+            storyController.SaveStory(shownStory);
+        }
+
+        private void refreshLibraryMenuClick(object sender, EventArgs e) {
+            listStories();
+        }
+
+        private void refreshStoryMenuClick(object sender, EventArgs e) {
+            openStory(shownStory);
+        }
     }
 }
