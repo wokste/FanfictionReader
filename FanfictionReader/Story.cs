@@ -9,26 +9,17 @@ namespace FanfictionReader {
         internal int Id;
         internal string Title;
         internal int ChapterID;
+        internal int PK;
+        internal string Host;
+        internal DateTime AddDate;
+        internal DateTime LastReadDate;
 
         internal string getUrl() {
-            return string.Format("http://fanfiction.net/s/{0}/{1}", Id, ChapterID);
+            return string.Format("http://{0}/s/{1}/{2}", Host, Id, ChapterID);
         }
 
         public override string ToString() {
             return string.Format("{0} ({1})", Title, ChapterID);
-        }
-
-        internal static Story makeFromUrl(string url) {
-            // TODO: Data validation
-            url = url.Remove(0, 8); // Remove http(s)://
-
-            var words = url.Split('/');
-
-            Story ret = new Story();
-            ret.Id = int.Parse(words[2]);
-            ret.ChapterID = int.Parse(words[3]);
-            ret.Title = words[4];
-            return ret;
         }
     }
 }

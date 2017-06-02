@@ -44,5 +44,7 @@ namespace FanfictionReader {
             var story = storyListBox.SelectedItem as Story;
             openStory(story);
         }
+
+
     }
 }
