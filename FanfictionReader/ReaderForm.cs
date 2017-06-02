@@ -60,14 +60,14 @@ namespace FanfictionReader {
                 return;
 
             shownStory.ChapterID--;
-            openStory(shownStory);
             storyController.SaveStory(shownStory);
+            openStory(shownStory);
         }
 
         private void nextChapterMenuClick(object sender, EventArgs e) {
             shownStory.ChapterID++;
-            openStory(shownStory);
             storyController.SaveStory(shownStory);
+            openStory(shownStory);
         }
 
         private void refreshLibraryMenuClick(object sender, EventArgs e) {
