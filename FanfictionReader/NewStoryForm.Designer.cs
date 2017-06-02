@@ -49,19 +49,19 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(12, 105);
+            this.okButton.Location = new System.Drawing.Point(12, 93);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.Size = new System.Drawing.Size(109, 35);
             this.okButton.TabIndex = 3;
-            this.okButton.Text = "OK";
+            this.okButton.Text = "Add Story";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(375, 105);
+            this.cancelButton.Location = new System.Drawing.Point(343, 93);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(109, 35);
             this.cancelButton.TabIndex = 4;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;

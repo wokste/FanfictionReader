@@ -38,6 +38,7 @@ namespace FanfictionReader {
 
             try {
                 story = sp.FromUrl(url);
+                errorLabel.Text = string.Empty;
             } catch (Exception ex) {
                 story = null;
                 errorLabel.Text = ex.Message;

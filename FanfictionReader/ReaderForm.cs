@@ -17,11 +17,10 @@ namespace FanfictionReader {
             conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
             conn.Open();
             storyController = new StoryController(conn);
-            listStories();
             openStory(null);
         }
 
-        private void listStories() {
+        private void refreshStoryList() {
             var storyList = storyController.GetStoryList();
 
             storyListBox.Items.Clear();
@@ -42,6 +41,8 @@ namespace FanfictionReader {
                 storyReader.Navigate(story.getUrl());
                 this.Text = "FanfictionReader - " + story.ToString();
             }
+
+            refreshStoryList();
         }
 
         private void storyClicked(object sender, EventArgs e) {
@@ -70,7 +71,7 @@ namespace FanfictionReader {
         }
 
         private void refreshLibraryMenuClick(object sender, EventArgs e) {
-            listStories();
+            refreshStoryList();
         }
 
         private void refreshStoryMenuClick(object sender, EventArgs e) {
