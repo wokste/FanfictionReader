@@ -33,8 +33,10 @@
             // urlTextBox
             // 
             this.urlTextBox.Location = new System.Drawing.Point(86, 13);
+            this.urlTextBox.Multiline = true;
             this.urlTextBox.Name = "urlTextBox";
-            this.urlTextBox.Size = new System.Drawing.Size(366, 20);
+            this.urlTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.urlTextBox.Size = new System.Drawing.Size(366, 154);
             this.urlTextBox.TabIndex = 0;
             this.urlTextBox.TextChanged += new System.EventHandler(this.urlTextBox_TextChanged);
             // 
@@ -49,7 +51,7 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(12, 93);
+            this.okButton.Location = new System.Drawing.Point(15, 311);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(109, 35);
             this.okButton.TabIndex = 3;
@@ -59,7 +61,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(343, 93);
+            this.cancelButton.Location = new System.Drawing.Point(346, 311);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(109, 35);
             this.cancelButton.TabIndex = 4;
@@ -70,7 +72,7 @@
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
-            this.errorLabel.Location = new System.Drawing.Point(12, 44);
+            this.errorLabel.Location = new System.Drawing.Point(12, 184);
             this.errorLabel.Name = "errorLabel";
             this.errorLabel.Size = new System.Drawing.Size(0, 13);
             this.errorLabel.TabIndex = 5;
@@ -79,7 +81,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 139);
+            this.ClientSize = new System.Drawing.Size(462, 358);
             this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);

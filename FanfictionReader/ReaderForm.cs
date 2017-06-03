@@ -56,7 +56,7 @@ namespace FanfictionReader {
         }
 
         private void addStoryMenuClick(object sender, EventArgs e) {
-            var frm = new NewStoryForm(storyController, null);
+            var frm = new NewStoryForm(storyController);
             frm.Show();
         }
 

@@ -72,7 +72,10 @@ namespace FanfictionReader {
                 query.Parameters.AddWithValue("@AddDate", story.AddDate);
                 query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
 
-                query.ExecuteNonQuery();
+                try {
+                    query.ExecuteNonQuery();
+                } catch (Exception) {
+                }
             }
 
             using (var query = new SQLiteCommand("select last_insert_rowid()", conn)) {
