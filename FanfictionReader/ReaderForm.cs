@@ -17,7 +17,9 @@ namespace FanfictionReader {
             conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
             conn.Open();
             storyController = new StoryController(conn);
-            openStory(null);
+
+            var lastReadStory = Properties.Settings.Default.LastReadFic;
+            openStory(storyController.GetStory(lastReadStory));
         }
 
         private void refreshStoryList() {
@@ -36,11 +38,14 @@ namespace FanfictionReader {
             if (story == null) {
                 storyReader.Navigate("about:blank");
                 this.Text = "FanfictionReader";
+                Properties.Settings.Default.LastReadFic = 0;
 
             } else {
                 storyReader.Navigate(story.getUrl());
                 this.Text = "FanfictionReader - " + story.ToString();
+                Properties.Settings.Default.LastReadFic = story.PK;
             }
+            Properties.Settings.Default.Save();
 
             refreshStoryList();
         }

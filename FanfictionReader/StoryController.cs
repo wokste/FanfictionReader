@@ -24,7 +24,20 @@ namespace FanfictionReader {
             return list;
         }
 
-        public Story GetStory(SQLiteDataReader reader) {
+        public Story GetStory(long PK) {
+            using (var query = new SQLiteCommand("SELECT * FROM Story WHERE PK = @PK", conn)) {
+                query.Parameters.AddWithValue("@PK", PK);
+                using (var reader = query.ExecuteReader()) {
+                    if (reader.Read()) {
+                        return GetStory(reader);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private Story GetStory(SQLiteDataReader reader) {
             var story = new Story();
             
             story.PK = reader.GetInt32(reader.GetOrdinal("PK"));

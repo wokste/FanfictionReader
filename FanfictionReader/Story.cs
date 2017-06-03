@@ -11,7 +11,7 @@ namespace FanfictionReader {
         
         internal int Id;
         internal string Title;
-        internal int ChapterID;        
+        internal int ChapterID;
         internal string Host;
         internal DateTime AddDate;
         internal DateTime LastReadDate;
