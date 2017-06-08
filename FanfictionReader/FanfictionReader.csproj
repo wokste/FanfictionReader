@@ -69,6 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FFStoryParser.cs" />
+    <Compile Include="HTMLTemplate.cs" />
     <Compile Include="NewStoryForm.cs">
       <SubType>Form</SubType>
     </Compile>

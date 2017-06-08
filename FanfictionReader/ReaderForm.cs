@@ -41,10 +41,10 @@ namespace FanfictionReader {
                 Properties.Settings.Default.LastReadFic = 0;
 
             } else {
-                var url = new URLParser().StoryToUrl(story);
-
-                storyReader.Navigate(url);
-                this.urlBox.Text = url;
+                var storyParser = new FFStoryParser();
+                var page = new HTMLTemplate();
+                page.Body = storyParser.getStoryText(story.Id, story.ChapterID);
+                storyReader.DocumentText = page.MakeHTML();
                 this.Text = "FanfictionReader - " + story.ToString();
                 Properties.Settings.Default.LastReadFic = story.PK;
             }
