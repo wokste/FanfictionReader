@@ -41,7 +41,10 @@ namespace FanfictionReader {
                 Properties.Settings.Default.LastReadFic = 0;
 
             } else {
-                storyReader.Navigate(story.getUrl());
+                var url = new URLParser().StoryToUrl(story);
+
+                storyReader.Navigate(url);
+                this.urlBox.Text = url;
                 this.Text = "FanfictionReader - " + story.ToString();
                 Properties.Settings.Default.LastReadFic = story.PK;
             }
@@ -81,6 +84,12 @@ namespace FanfictionReader {
 
         private void refreshStoryMenuClick(object sender, EventArgs e) {
             openStory(shownStory);
+        }
+
+        private void urlBoxKeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Enter) {
+                //TODO: Add story
+            }
         }
     }
 }

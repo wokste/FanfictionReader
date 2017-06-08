@@ -28,30 +28,38 @@
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addStoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.storyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.previousChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.urlBox = new System.Windows.Forms.ToolStripTextBox();
             this.MainMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // storyReader
             // 
             this.storyReader.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.storyReader.Location = new System.Drawing.Point(205, 24);
+            this.storyReader.Location = new System.Drawing.Point(0, 25);
             this.storyReader.MinimumSize = new System.Drawing.Size(20, 20);
             this.storyReader.Name = "storyReader";
-            this.storyReader.Size = new System.Drawing.Size(803, 466);
+            this.storyReader.Size = new System.Drawing.Size(809, 441);
             this.storyReader.TabIndex = 0;
             // 
             // storyListBox
             // 
-            this.storyListBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.storyListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.storyListBox.FormattingEnabled = true;
-            this.storyListBox.Location = new System.Drawing.Point(0, 24);
+            this.storyListBox.Location = new System.Drawing.Point(0, 0);
             this.storyListBox.Name = "storyListBox";
-            this.storyListBox.Size = new System.Drawing.Size(205, 466);
+            this.storyListBox.Size = new System.Drawing.Size(195, 466);
             this.storyListBox.TabIndex = 1;
             this.storyListBox.SelectedIndexChanged += new System.EventHandler(this.storyClicked);
             // 
@@ -83,6 +91,14 @@
             this.addStoryToolStripMenuItem.Text = "New Story";
             this.addStoryToolStripMenuItem.Click += new System.EventHandler(this.addStoryMenuClick);
             // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshLibraryMenuClick);
+            // 
             // storyToolStripMenuItem
             // 
             this.storyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -109,14 +125,6 @@
             this.nextChapterToolStripMenuItem.Text = "Next Chapter";
             this.nextChapterToolStripMenuItem.Click += new System.EventHandler(this.nextChapterMenuClick);
             // 
-            // refreshToolStripMenuItem
-            // 
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshLibraryMenuClick);
-            // 
             // refreshToolStripMenuItem1
             // 
             this.refreshToolStripMenuItem1.Name = "refreshToolStripMenuItem1";
@@ -125,13 +133,46 @@
             this.refreshToolStripMenuItem1.Text = "Refresh";
             this.refreshToolStripMenuItem1.Click += new System.EventHandler(this.refreshStoryMenuClick);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.storyListBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.storyReader);
+            this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
+            this.splitContainer1.Size = new System.Drawing.Size(1008, 466);
+            this.splitContainer1.SplitterDistance = 195;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.urlBox});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(809, 25);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // urlBox
+            // 
+            this.urlBox.Name = "urlBox";
+            this.urlBox.Size = new System.Drawing.Size(500, 25);
+            this.urlBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.urlBoxKeyDown);
+            // 
             // ReaderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 490);
-            this.Controls.Add(this.storyReader);
-            this.Controls.Add(this.storyListBox);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.Name = "ReaderForm";
@@ -139,6 +180,13 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,6 +204,9 @@
         private System.Windows.Forms.ToolStripMenuItem addStoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripTextBox urlBox;
     }
 }
 

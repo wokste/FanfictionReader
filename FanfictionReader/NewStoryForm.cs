@@ -33,7 +33,7 @@ namespace FanfictionReader {
 
         private void urlTextBox_TextChanged(object sender, EventArgs e) {
             var urls = urlTextBox.Text.Split(new char[]{'\r','\n'});
-            var parser = new StoryParser();
+            var parser = new URLParser();
             var sb = new StringBuilder();
 
             stories.Clear();
@@ -46,7 +46,7 @@ namespace FanfictionReader {
 
                 line++;
                 try {
-                    var story = parser.FromUrl(url);
+                    var story = parser.UrlToStory(url);
                     stories.Add(story);
                 } catch (Exception) {
                     sb.AppendFormat("Line {0}: {1}\n", line, url);

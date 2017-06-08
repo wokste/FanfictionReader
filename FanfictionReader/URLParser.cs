@@ -2,13 +2,13 @@
 using System.Text.RegularExpressions;
 
 namespace FanfictionReader {
-    class StoryParser {
+    class URLParser {
         /// <summary>
         /// Parses the metadata from the url to a story.
         /// </summary>
         /// <param name="url">A web-address pointing to a story</param>
         /// <returns>The information from this url, in a Story object. No metadata from the webpage is parsed.</returns>
-        internal Story FromUrl(string url) {
+        internal Story UrlToStory(string url) {
             // Remove "http://", "https://", "www." etc from url
             url = Regex.Replace(url, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
 
@@ -22,6 +22,10 @@ namespace FanfictionReader {
             story.Title = words[4];
 
             return story;
+        }
+
+        internal string StoryToUrl(Story story) {
+            return string.Format("http://{0}/s/{1}/{2}", story.Host, story.Id, story.ChapterID);
         }
     }
 }

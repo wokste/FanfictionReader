@@ -16,10 +16,6 @@ namespace FanfictionReader {
         internal DateTime AddDate;
         internal DateTime LastReadDate;
 
-        internal string getUrl() {
-            return string.Format("http://{0}/s/{1}/{2}", Host, Id, ChapterID);
-        }
-
         public override string ToString() {
             return string.Format("{0} ({1})", Title, ChapterID);
         }
