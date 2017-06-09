@@ -24,10 +24,19 @@ namespace FanfictionReader {
             return match.Value;
         }
 
+        /// <summary>
+        /// Update the metadata of the story by making a request to the server.
+        /// </summary>
+        /// <param name="story">The story of which the metadata should be updated</param>
+        /// <returns>Whether it was successfull in making an update. False can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
         internal bool UpdateMeta(Story story) {
             // The metadata is the same for each chapter and chapter 1 always exists.
             var html = GetHtml(story.Id, 1);
             var metadataMatch = _metadataRegex.Match(html);
+            if (!metadataMatch.Success) {
+                return false;
+            }
+
             var metaData = metadataMatch.Value;
 
             metaData = _htmlTagRegex.Replace(metaData, "");
