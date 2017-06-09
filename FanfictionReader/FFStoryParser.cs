@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace FanfictionReader {
     class FFStoryParser {
         private string host = "fanfiction.net";
 
-        private readonly Regex STORY_TEXT_REGEX = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
+        private readonly Regex _storyTextRegex = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
 
-        private readonly Regex METADATA_REGEX = new Regex(@"Rated:(.+)");
-        private readonly Regex HTML_TAG_REGEX = new Regex(@"<[^>]*?>");
+        private readonly Regex _metadataRegex = new Regex(@"Rated:(.+)");
+        private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
 
-        internal FFStoryParser() {
-        }
+        internal string GetStoryText(int storyId, int chapterId) {
+            var html = GetHtml(storyId, chapterId);
 
-        internal string GetStoryText(int storyID, int chapterID) {
-            var html = getHTML(storyID, chapterID);
+            var match = _storyTextRegex.Match(html);
 
-            var match = STORY_TEXT_REGEX.Match(html);
-
-            if (match != null && match.Success)
+            if (match.Success)
                 return match.Value;
 
             return "";
@@ -30,14 +25,14 @@ namespace FanfictionReader {
 
         internal bool UpdateMeta(Story story) {
             // The metadata is the same for each chapter and chapter 1 always exists.
-            var html = getHTML(story.Id, 1);
-            var metadataMatch = METADATA_REGEX.Match(html);
+            var html = GetHtml(story.Id, 1);
+            var metadataMatch = _metadataRegex.Match(html);
             var metaData = metadataMatch.Value;
 
-            metaData = HTML_TAG_REGEX.Replace(metaData, "");
+            metaData = _htmlTagRegex.Replace(metaData, "");
 
             var tokens = metaData.Replace("Sci-Fi", "Sci+Fi").Split('-').Select(
-                (s) => { return s.Trim().Replace("Sci+Fi", "Sci-Fi"); }
+                (s) => s.Trim().Replace("Sci+Fi", "Sci-Fi")
             );
 
             foreach (var token in tokens) {
@@ -117,8 +112,8 @@ namespace FanfictionReader {
             }
         }
 
-        private int tokenToInt(string token) {
-            var i = 0;
+        private int tokenToInt(string token){
+            int i;
             
             if (!int.TryParse(token.Replace(",", ""), out i)) {
                 return 0;
@@ -127,10 +122,9 @@ namespace FanfictionReader {
             return i;
         }
 
-        private string getHTML(int storyID, int chapterID) {
-            var url = string.Format("http://{0}/s/{1}/{2}", host, storyID, chapterID);
-            var client = new System.Net.WebClient();
-            client.Encoding = Encoding.UTF8;
+        private string GetHtml(int storyId, int chapterId) {
+            var url = $"http://{host}/s/{storyId}/{chapterId}";
+            var client = new System.Net.WebClient {Encoding = Encoding.UTF8};
             var html = client.DownloadString(url);
            
             return html;

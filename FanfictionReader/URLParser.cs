@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace FanfictionReader {
-    class URLParser {
+    class UrlParser {
         /// <summary>
         /// Parses the metadata from the url to a story.
         /// </summary>
@@ -14,18 +13,16 @@ namespace FanfictionReader {
 
             var words = url.Split('/');
 
-            Story story = new Story();
-            story.Host = words[0];
-            story.PK = 0;
-            story.Id = int.Parse(words[2]);
-            story.ChapterID = int.Parse(words[3]);
-            story.Title = words[4];
+            Story story = new Story
+            {
+                Host = words[0],
+                SqlPk = 0,
+                Id = int.Parse(words[2]),
+                ChapterId = int.Parse(words[3]),
+                Title = words[4]
+            };
 
             return story;
-        }
-
-        internal string StoryToUrl(Story story) {
-            return string.Format("http://{0}/s/{1}/{2}", story.Host, story.Id, story.ChapterID);
         }
     }
 }

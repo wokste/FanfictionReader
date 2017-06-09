@@ -58,7 +58,7 @@
             this.storyListBox.Name = "storyListBox";
             this.storyListBox.Size = new System.Drawing.Size(195, 466);
             this.storyListBox.TabIndex = 1;
-            this.storyListBox.SelectedIndexChanged += new System.EventHandler(this.storyClicked);
+            this.storyListBox.SelectedIndexChanged += new System.EventHandler(this.StoryClicked);
             // 
             // MainMenu
             // 
@@ -86,7 +86,7 @@
             this.addStoryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.addStoryToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.addStoryToolStripMenuItem.Text = "New Story";
-            this.addStoryToolStripMenuItem.Click += new System.EventHandler(this.addStoryMenuClick);
+            this.addStoryToolStripMenuItem.Click += new System.EventHandler(this.AddStoryMenuClick);
             // 
             // refreshToolStripMenuItem
             // 
@@ -94,7 +94,7 @@
             this.refreshToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
             this.refreshToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshLibraryMenuClick);
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.RefreshLibraryMenuClick);
             // 
             // storyToolStripMenuItem
             // 
@@ -112,7 +112,7 @@
             this.previousChapterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
             this.previousChapterToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.previousChapterToolStripMenuItem.Text = "Previous Chapter";
-            this.previousChapterToolStripMenuItem.Click += new System.EventHandler(this.previousChapterMenuClick);
+            this.previousChapterToolStripMenuItem.Click += new System.EventHandler(this.PreviousChapterMenuClick);
             // 
             // nextChapterToolStripMenuItem
             // 
@@ -120,7 +120,7 @@
             this.nextChapterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
             this.nextChapterToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.nextChapterToolStripMenuItem.Text = "Next Chapter";
-            this.nextChapterToolStripMenuItem.Click += new System.EventHandler(this.nextChapterMenuClick);
+            this.nextChapterToolStripMenuItem.Click += new System.EventHandler(this.NextChapterMenuClick);
             // 
             // refreshToolStripMenuItem1
             // 
@@ -128,7 +128,7 @@
             this.refreshToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.refreshToolStripMenuItem1.Size = new System.Drawing.Size(218, 22);
             this.refreshToolStripMenuItem1.Text = "Refresh";
-            this.refreshToolStripMenuItem1.Click += new System.EventHandler(this.refreshStoryMenuClick);
+            this.refreshToolStripMenuItem1.Click += new System.EventHandler(this.RefreshStoryMenuClick);
             // 
             // splitContainer1
             // 
