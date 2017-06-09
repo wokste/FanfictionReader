@@ -42,6 +42,8 @@ namespace FanfictionReader {
 
             } else {
                 var storyParser = new FFStoryParser();
+                storyParser.getMeta(story.Id);
+
                 var page = new HTMLTemplate();
                 page.Body = storyParser.getStoryText(story.Id, story.ChapterID);
                 storyReader.DocumentText = page.MakeHTML();

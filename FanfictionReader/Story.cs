@@ -16,6 +16,14 @@ namespace FanfictionReader {
         internal DateTime AddDate;
         internal DateTime LastReadDate;
 
+        // TODO: Add the following fields in the database
+        internal int Chapters = 0;
+        internal int Favs = 0;
+        internal int Follows = 0;
+        internal int Reviews = 0;
+        internal int Words = 0;
+        internal bool Complete = false;
+
         public override string ToString() {
             return string.Format("{0} ({1})", Title, ChapterID);
         }
