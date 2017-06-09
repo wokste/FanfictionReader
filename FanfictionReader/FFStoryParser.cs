@@ -9,7 +9,7 @@ namespace FanfictionReader {
     class FFStoryParser {
         private string host = "fanfiction.net";
 
-        private readonly Regex STORY_TEXT_REGEX = new Regex(@"id='storytext'[^>]*>([\s\S]*?)<\/div");
+        private readonly Regex STORY_TEXT_REGEX = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
 
         internal FFStoryParser() {
         }
