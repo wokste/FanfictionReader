@@ -42,10 +42,10 @@ namespace FanfictionReader {
 
             } else {
                 var storyParser = new FFStoryParser();
-                storyParser.getMeta(story.Id);
+                storyParser.UpdateMeta(story);
 
                 var page = new HTMLTemplate();
-                page.Body = storyParser.getStoryText(story.Id, story.ChapterID);
+                page.Body = storyParser.GetStoryText(story.Id, story.ChapterID);
                 storyReader.DocumentText = page.MakeHTML();
                 this.Text = "FanfictionReader - " + story.ToString();
                 Properties.Settings.Default.LastReadFic = story.PK;
@@ -86,12 +86,6 @@ namespace FanfictionReader {
 
         private void refreshStoryMenuClick(object sender, EventArgs e) {
             openStory(shownStory);
-        }
-
-        private void urlBoxKeyDown(object sender, KeyEventArgs e) {
-            if (e.KeyCode == Keys.Enter) {
-                //TODO: Add story
-            }
         }
     }
 }

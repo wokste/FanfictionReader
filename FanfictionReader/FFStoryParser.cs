@@ -17,7 +17,7 @@ namespace FanfictionReader {
         internal FFStoryParser() {
         }
 
-        internal string getStoryText(int storyID, int chapterID) {
+        internal string GetStoryText(int storyID, int chapterID) {
             var html = getHTML(storyID, chapterID);
 
             var match = STORY_TEXT_REGEX.Match(html);
@@ -28,9 +28,9 @@ namespace FanfictionReader {
             return "";
         }
 
-        internal Story getMeta(int storyID) {
-            // It doesn't matter what chapter you take. The metadata is always the same.
-            var html = getHTML(storyID, 1);
+        internal bool UpdateMeta(Story story) {
+            // The metadata is the same for each chapter and chapter 1 always exists.
+            var html = getHTML(story.Id, 1);
             var metadataMatch = METADATA_REGEX.Match(html);
             var metaData = metadataMatch.Value;
 
@@ -40,66 +40,91 @@ namespace FanfictionReader {
                 (s) => { return s.Trim().Replace("Sci+Fi", "Sci-Fi"); }
             );
 
-            Story story = new Story();
-
-            /*
-            var crossOver = matchString(CROSSOVER_REGEX, body);
-            if (crossOver) {
-                story.sourceName = crossOver;
-            } else {
-                story.sourceMedium = matchString(SOURCE_MEDIUM_REGEX, body);
-                story.sourceName = matchString(SOURCE_NAME_REGEX, body);
-            }
-            */
-
-            /*
-            console.log(tokens[2]);
-            if (this.isGenre(tokens[2])) {
-                story.genre = tokens[2].split('/');
-                if (!this.startsWithTerminator(tokens[3])) {
-                    story.characters = tokens[3].split(',').map(character => character.trim().replace('[', '').replace(']', ''));
-                }
-            } else if (!this.startsWithTerminator(tokens[2])) {
-                story.characters = tokens[2].split(',').map(character => character.trim().replace('[', '').replace(']', ''));
-            }
-            */
-
             foreach (var token in tokens) {
                 var split = token.Split(':').Select(s => s.Trim()).ToArray();
-                var type = split[0];
+                var key = split[0];
                 var value = (split.Length > 1) ? split[1] : "";
 
-                switch (type) {
-                    case "Chapters":
-                        story.Chapters = tokenToInt(value);
-                        break;
-                    case "Words":
-                        story.Words = tokenToInt(value);
-                        break;
-                    case "Reviews":
-                        story.Reviews = tokenToInt(value);
-                        break;
-                    case "Favs":
-                        story.Favs = tokenToInt(value);
-                        break;
-                    case "Follows":
-                        story.Follows = tokenToInt(value);
-                        break;
-                    case "Complete":
-                        story.Complete = true;
-                        break;
-                }
+                UpdateMetaValue(story, key, value);
             }
 
-            Console.Write("Chapters:{0}\nFavs:{1}\nFollows:{2}\nReviews:{3}\nWords:{4}\n\n", story.Chapters, story.Favs, story.Follows, story.Reviews, story.Words);
+            return true;
+        }
 
-            return story;
+        private void UpdateMetaValue(Story story, string key, string value) {
+            switch (key) {
+                case "Chapters":
+                    story.Chapters = tokenToInt(value);
+                    return;
+                case "Words":
+                    story.Words = tokenToInt(value);
+                    return;
+                case "Reviews":
+                    story.Reviews = tokenToInt(value);
+                    return;
+                case "Favs":
+                    story.Favs = tokenToInt(value);
+                    return;
+                case "Follows":
+                    story.Follows = tokenToInt(value);
+                    return;
+                case "Complete":
+                    story.Complete = true;
+                    return;
+                case "Rated":
+                    story.MinimiumAge = tokenToRating(value);
+                    return;
+                case "Updated":
+                    story.UpdateDate = tokenToDate(value);
+                    return;
+                case "Published":
+                    story.PublishDate = tokenToDate(value);
+                    return;
+            }
+        }
+
+
+        /// <param name="dateStr">A date in the format "8/25/2015"</param>
+        /// <returns>The date</returns>
+        private DateTime tokenToDate(string dateStr) {
+            var provider = System.Globalization.CultureInfo.InvariantCulture;
+
+            var format = "M/d/yyyy";
+            try {
+                return DateTime.ParseExact(dateStr, format, provider);
+            } catch (FormatException) {
+                Console.WriteLine("{0} is not in the correct format {1}.", dateStr, format);
+            }
+            return new DateTime(0);
+        }
+
+        /// <param name="rateStr"></param>
+        /// <returns>The minimum age or -1 if no formatting could be found</returns>
+        private int tokenToRating(string rateStr) {
+            switch (rateStr) {
+                case "Fiction K":
+                    return 5;
+                case "Fiction K+":
+                    return 9;
+                case "Fiction T":
+                    return 13;
+                case "Fiction M":
+                    return 16;
+                case "Fiction MA":
+                    return 18;
+                default:
+                    return -1;
+            }
         }
 
         private int tokenToInt(string token) {
-            //TODO: change this in tryparse
+            var i = 0;
+            
+            if (!int.TryParse(token.Replace(",", ""), out i)) {
+                return 0;
+            }
 
-            return int.Parse(token.Replace(",", ""));
+            return i;
         }
 
         private string getHTML(int storyID, int chapterID) {

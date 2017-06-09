@@ -23,6 +23,10 @@ namespace FanfictionReader {
         internal int Reviews = 0;
         internal int Words = 0;
         internal bool Complete = false;
+        internal int MinimiumAge;
+        internal DateTime UpdateDate;
+        internal DateTime PublishDate;
+
 
         public override string ToString() {
             return string.Format("{0} ({1})", Title, ChapterID);
