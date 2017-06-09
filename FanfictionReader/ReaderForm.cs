@@ -38,7 +38,7 @@ namespace FanfictionReader {
                 Properties.Settings.Default.LastReadFic = 0;
 
             } else {
-                var storyParser = new FFStoryParser();
+                var storyParser = new FictionpressStoryParser();
                 storyParser.UpdateMeta(story);
 
                 var page = new HtmlTemplate

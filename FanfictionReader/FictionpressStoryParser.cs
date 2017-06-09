@@ -4,8 +4,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace FanfictionReader {
-    class FFStoryParser {
-        private string host = "fanfiction.net";
+    internal class FictionpressStoryParser {
+        private readonly string _host = "fanfiction.net";
 
         private readonly Regex _storyTextRegex = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
 
@@ -17,10 +17,11 @@ namespace FanfictionReader {
 
             var match = _storyTextRegex.Match(html);
 
-            if (match.Success)
-                return match.Value;
+            if (!match.Success) {
+                return "";
+            }
 
-            return "";
+            return match.Value;
         }
 
         internal bool UpdateMeta(Story story) {
@@ -32,7 +33,7 @@ namespace FanfictionReader {
             metaData = _htmlTagRegex.Replace(metaData, "");
 
             var tokens = metaData.Replace("Sci-Fi", "Sci+Fi").Split('-').Select(
-                (s) => s.Trim().Replace("Sci+Fi", "Sci-Fi")
+                s => s.Trim().Replace("Sci+Fi", "Sci-Fi")
             );
 
             foreach (var token in tokens) {
@@ -49,39 +50,43 @@ namespace FanfictionReader {
         private void UpdateMetaValue(Story story, string key, string value) {
             switch (key) {
                 case "Chapters":
-                    story.Chapters = tokenToInt(value);
+                    story.Chapters = TokenToInt(value);
                     return;
                 case "Words":
-                    story.Words = tokenToInt(value);
+                    story.Words = TokenToInt(value);
                     return;
                 case "Reviews":
-                    story.Reviews = tokenToInt(value);
+                    story.Reviews = TokenToInt(value);
                     return;
                 case "Favs":
-                    story.Favs = tokenToInt(value);
+                    story.Favs = TokenToInt(value);
                     return;
                 case "Follows":
-                    story.Follows = tokenToInt(value);
+                    story.Follows = TokenToInt(value);
                     return;
                 case "Complete":
                     story.Complete = true;
                     return;
                 case "Rated":
-                    story.MinimiumAge = tokenToRating(value);
+                    story.MinimiumAge = TokenToRating(value);
                     return;
                 case "Updated":
-                    story.UpdateDate = tokenToDate(value);
+                    story.UpdateDate = TokenToDate(value);
                     return;
                 case "Published":
-                    story.PublishDate = tokenToDate(value);
+                    story.PublishDate = TokenToDate(value);
                     return;
+                default: {
+                    
+                    return;
+                }
             }
         }
 
 
         /// <param name="dateStr">A date in the format "8/25/2015"</param>
         /// <returns>The date</returns>
-        private DateTime tokenToDate(string dateStr) {
+        private DateTime TokenToDate(string dateStr) {
             var provider = System.Globalization.CultureInfo.InvariantCulture;
 
             var format = "M/d/yyyy";
@@ -95,7 +100,7 @@ namespace FanfictionReader {
 
         /// <param name="rateStr"></param>
         /// <returns>The minimum age or -1 if no formatting could be found</returns>
-        private int tokenToRating(string rateStr) {
+        private int TokenToRating(string rateStr) {
             switch (rateStr) {
                 case "Fiction K":
                     return 5;
@@ -112,18 +117,13 @@ namespace FanfictionReader {
             }
         }
 
-        private int tokenToInt(string token){
+        private int TokenToInt(string token){
             int i;
-            
-            if (!int.TryParse(token.Replace(",", ""), out i)) {
-                return 0;
-            }
-
-            return i;
+            return int.TryParse(token.Replace(",", ""), out i) ? i : 0;
         }
 
         private string GetHtml(int storyId, int chapterId) {
-            var url = $"http://{host}/s/{storyId}/{chapterId}";
+            var url = $"http://{_host}/s/{storyId}/{chapterId}";
             var client = new System.Net.WebClient {Encoding = Encoding.UTF8};
             var html = client.DownloadString(url);
            

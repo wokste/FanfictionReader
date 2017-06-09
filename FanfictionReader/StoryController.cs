@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 
 namespace FanfictionReader {
-    class StoryController {
+    internal class StoryController {
         private readonly SQLiteConnection _conn;
 
-        public StoryController(SQLiteConnection conn) {
+        internal StoryController(SQLiteConnection conn) {
             _conn = conn;
         }
 
-        public IList<Story> GetStoryList() {
+        internal IList<Story> GetStoryList() {
             var list = new List<Story>();
             using (var query = new SQLiteCommand("SELECT * FROM Story", _conn)) {
                 using (var reader = query.ExecuteReader()) {
@@ -23,9 +24,9 @@ namespace FanfictionReader {
             return list;
         }
 
-        public Story GetStory(long pk) {
-            using (var query = new SQLiteCommand("SELECT * FROM Story WHERE PK = @SqlPk", _conn)) {
-                query.Parameters.AddWithValue("@SqlPk", pk);
+        internal Story GetStory(long pk) {
+            using (var query = new SQLiteCommand("SELECT * FROM Story WHERE PK = @Pk", _conn)) {
+                query.Parameters.AddWithValue("@Pk", pk);
                 using (var reader = query.ExecuteReader()) {
                     if (reader.Read()) {
                         return GetStory(reader);
@@ -36,7 +37,7 @@ namespace FanfictionReader {
             return null;
         }
 
-        private Story GetStory(SQLiteDataReader reader) {
+        private Story GetStory(IDataRecord reader) {
             var story = new Story
             {
                 SqlPk = reader.GetInt32(reader.GetOrdinal("PK")),
@@ -51,7 +52,7 @@ namespace FanfictionReader {
             return story;
         }
 
-        public void SaveStory(Story story) {
+        internal void SaveStory(Story story) {
             if (story.SqlPk == 0) {
                 InsertStory(story);
             } else {

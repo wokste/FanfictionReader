@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace FanfictionReader {
-    class Story {
+    internal class Story {
         /// <summary>The primary key in the database. 0 is not in the database.</summary>
         internal long SqlPk;
         

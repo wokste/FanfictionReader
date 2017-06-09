@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace FanfictionReader {
-    class UrlParser {
+    internal class UrlParser {
         /// <summary>
         /// Parses the metadata from the url to a story.
         /// </summary>
@@ -9,11 +9,11 @@ namespace FanfictionReader {
         /// <returns>The information from this url, in a Story object. No metadata from the webpage is parsed.</returns>
         internal Story UrlToStory(string url) {
             // Remove "http://", "https://", "www." etc from url
-            url = Regex.Replace(url, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
+            url = Regex.Replace(url, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", "", RegexOptions.IgnoreCase);
 
             var words = url.Split('/');
 
-            Story story = new Story
+            var story = new Story
             {
                 Host = words[0],
                 SqlPk = 0,

@@ -4,11 +4,11 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace FanfictionReader {
-    partial class NewStoryForm : Form {
+    internal partial class NewStoryForm : Form {
         private readonly List<Story> _stories = new List<Story>();
         private readonly StoryController _storyController;
 
-        public NewStoryForm(StoryController storyController) {
+        internal NewStoryForm(StoryController storyController) {
             InitializeComponent();
             
             _storyController = storyController;
@@ -33,7 +33,7 @@ namespace FanfictionReader {
 
             _stories.Clear();
 
-            int line = 0;
+            var line = 0;
 
             foreach (var url in urls) {
                 if (url == "")
