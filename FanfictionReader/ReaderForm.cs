@@ -49,7 +49,7 @@ namespace FanfictionReader {
 
         private void StoryClicked(object sender, EventArgs e) {
             var story = storyListBox.SelectedItem as Story;
-            _reader.SelectStory(story);
+            _reader.Story = story;
         }
 
         private void AddStoryMenuClick(object sender, EventArgs e) {
@@ -58,11 +58,11 @@ namespace FanfictionReader {
         }
 
         private void PreviousChapterMenuClick(object sender, EventArgs e) {
-            _reader.PreviousChapter();
+            _reader.LastReadChapterId--;
         }
 
         private void NextChapterMenuClick(object sender, EventArgs e) {
-            _reader.NextChapter();
+            _reader.LastReadChapterId++;
         }
         
         private void RefreshStoryMenuClick(object sender, EventArgs e) {

@@ -13,8 +13,34 @@ namespace FanfictionReader {
         
         internal Action<Story> OnStoryUpdate;
         internal Action<Story> OnStoryDelete;
-
         internal Action<HtmlTemplate> OnPageRender;
+
+        internal Story Story {
+            get { return _story; }
+            set {
+                _story = value;
+                RefreshPage();
+            }
+        }
+
+        internal int LastReadChapterId {
+            get { return _story.LastReadChapterId; }
+            set {
+                if (value < 0)
+                    value = 0;
+
+                if (value > _story.ChapterCount)
+                    value = _story.ChapterCount;
+
+                if (_story.LastReadChapterId == value)
+                    return;
+
+                _story.LastReadChapterId = value;
+                _storyController.SaveStory(_story);
+                RefreshPage();
+                OnStoryUpdate?.Invoke(_story);
+            }
+        }
 
         internal Reader() {
             var conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
@@ -22,11 +48,7 @@ namespace FanfictionReader {
             _storyController = new StoryController(conn);
             _chapterCache = new ChapterCache(conn);
         }
-
-        public void SelectStory(Story story) {
-            _story = story;
-            RefreshPage();
-        }
+        
 
         internal void SaveStory(Story story) {
             _storyController.SaveStory(story);
@@ -35,8 +57,7 @@ namespace FanfictionReader {
 
         internal void LoadLastStory() {
             var lastReadStory = Properties.Settings.Default.LastReadFic;
-            _story = _storyController.GetStory(lastReadStory);
-            RefreshPage();
+            Story = _storyController.GetStory(lastReadStory);
         }
 
         private void RefreshPage() {
@@ -70,25 +91,6 @@ namespace FanfictionReader {
 
         internal IList<Story> GetStoryList() {
             return _storyController.GetStoryList();
-        }
-
-        internal void PreviousChapter() {
-            if (_story.LastReadChapterId <= 0)
-                return;
-
-            _story.LastReadChapterId--;
-            _storyController.SaveStory(_story);
-            RefreshPage();
-            
-            OnStoryUpdate?.Invoke(_story);
-        }
-
-        internal void NextChapter() {
-            _story.LastReadChapterId++;
-            _storyController.SaveStory(_story);
-            RefreshPage();
-            
-            OnStoryUpdate?.Invoke(_story);
         }
     }
 }
