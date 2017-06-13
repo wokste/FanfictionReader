@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -13,7 +15,7 @@ namespace FanfictionReader {
         private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
 
         internal string GetStoryText(int storyId, int chapterId) {
-            var html = GetHtml(storyId, chapterId);
+            string html = GetHtml(storyId, chapterId);
 
             var match = _storyTextRegex.Match(html);
 
@@ -30,8 +32,15 @@ namespace FanfictionReader {
         /// <param name="story">The story of which the metadata should be updated</param>
         /// <returns>Whether it was successfull in making an update. False can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
         internal bool UpdateMeta(Story story) {
-            // The metadata is the same for each chapter and chapter 1 always exists.
-            var html = GetHtml(story.Id, 1);
+            string html = "";
+            try {
+                // The metadata is the same for each chapter and chapter 1 always exists.
+                html = GetHtml(story.Id, 1);
+            }
+            catch (WebException) {
+                return false;
+            }
+
             var metadataMatch = _metadataRegex.Match(html);
             if (!metadataMatch.Success) {
                 return false;
@@ -134,10 +143,10 @@ namespace FanfictionReader {
 
         private string GetHtml(int storyId, int chapterId) {
             var url = $"http://{_host}/s/{storyId}/{chapterId}";
-            var client = new System.Net.WebClient {Encoding = Encoding.UTF8};
-            var html = client.DownloadString(url);
-           
-            return html;
+            using (var client = new System.Net.WebClient {Encoding = Encoding.UTF8 }){
+                var html = client.DownloadString(url);
+                return html;
+            }
         }
     }
 }

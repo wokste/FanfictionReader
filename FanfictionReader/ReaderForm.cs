@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SQLite;
+using System.Net;
 using System.Windows.Forms;
 
 namespace FanfictionReader {
@@ -43,11 +44,16 @@ namespace FanfictionReader {
                 var storyParser = new FictionpressStoryParser();
                 storyParser.UpdateMeta(story);
 
-                var page = new HtmlTemplate
-                {
-                    Body = storyParser.GetStoryText(story.Id, story.LastReadChapterId)
-                };
+                var page = new HtmlTemplate();
+
+                try {
+                    page.Body = storyParser.GetStoryText(story.Id, story.LastReadChapterId);
+                } catch (WebException ex) {
+                    page.Body = $"<p>{ex.Message}</p>";
+                }
+
                 storyReader.DocumentText = page.MakeHtml();
+
                 Text = "FanfictionReader - " + story;
                 Properties.Settings.Default.LastReadFic = story.SqlPk;
             }
