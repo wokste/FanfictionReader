@@ -6,17 +6,17 @@ using System.Windows.Forms;
 namespace FanfictionReader {
     internal partial class NewStoryForm : Form {
         private readonly List<Story> _stories = new List<Story>();
-        private readonly StoryController _storyController;
+        private Reader _reader;
 
-        internal NewStoryForm(StoryController storyController) {
+        internal NewStoryForm(Reader reader) {
             InitializeComponent();
-            
-            _storyController = storyController;
+
+            _reader = reader;
         }
 
         private void okButton_Click(object sender, EventArgs e) {
             foreach (var story in _stories) {
-                _storyController.SaveStory(story);
+                _reader.SaveStory(story);
             }
 
             Close();

@@ -28,7 +28,6 @@
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addStoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.storyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.previousChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,8 +73,7 @@
             // libraryToolStripMenuItem
             // 
             this.libraryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addStoryToolStripMenuItem,
-            this.refreshToolStripMenuItem});
+            this.addStoryToolStripMenuItem});
             this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
             this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.libraryToolStripMenuItem.Text = "Library";
@@ -87,14 +85,6 @@
             this.addStoryToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.addStoryToolStripMenuItem.Text = "New Story";
             this.addStoryToolStripMenuItem.Click += new System.EventHandler(this.AddStoryMenuClick);
-            // 
-            // refreshToolStripMenuItem
-            // 
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.RefreshLibraryMenuClick);
             // 
             // storyToolStripMenuItem
             // 
@@ -179,7 +169,6 @@
         private System.Windows.Forms.ToolStripMenuItem nextChapterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addStoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem1;
         private System.Windows.Forms.SplitContainer splitContainer1;
     }
