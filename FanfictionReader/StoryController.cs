@@ -42,22 +42,23 @@ namespace FanfictionReader {
         }
 
         private Story GetStory(IDataRecord reader) {
-            var story = new Story();
-            story.Pk = reader.GetInt32(reader.GetOrdinal("PK"));
-            story.Id = reader.GetInt32(reader.GetOrdinal("Id"));
-            story.Title = reader.GetString(reader.GetOrdinal("Title"));
-            story.LastReadChapterId = reader.GetInt32(reader.GetOrdinal("LastReadChapterId"));
-            story.Host = reader.GetString(reader.GetOrdinal("Host"));
-            story.AddDate = reader.GetDateTime(reader.GetOrdinal("AddDate"));
-            story.LastReadDate = reader.GetDateTime(reader.GetOrdinal("LastReadDate"));
-            story.AuthorId = reader.GetInt32(reader.GetOrdinal("AuthorId"));
-            story.ChapterCount = reader.GetInt32(reader.GetOrdinal("ChapterCount"));
-            story.IsComplete = reader.GetBoolean(reader.GetOrdinal("IsComplete"));
-            story.MinimumAge = reader.GetInt32(reader.GetOrdinal("MinimumAge"));
-            story.Words = reader.GetInt32(reader.GetOrdinal("Words"));
-            story.PublishDate = reader.GetDateTime(reader.GetOrdinal("PublishDate"));
-            story.UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"));
-            story.MetaCheckDate = reader.GetDateTime(reader.GetOrdinal("MetaCheckDate"));
+            var story = new Story {
+                Pk = reader.GetInt32(reader.GetOrdinal("PK")),
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Title = reader.GetString(reader.GetOrdinal("Title")),
+                LastReadChapterId = reader.GetInt32(reader.GetOrdinal("LastReadChapterId")),
+                Host = reader.GetString(reader.GetOrdinal("Host")),
+                AddDate = reader.GetDateTime(reader.GetOrdinal("AddDate")),
+                LastReadDate = reader.GetDateTime(reader.GetOrdinal("LastReadDate")),
+                AuthorId = reader.GetInt32(reader.GetOrdinal("AuthorId")),
+                ChapterCount = reader.GetInt32(reader.GetOrdinal("ChapterCount")),
+                IsComplete = reader.GetBoolean(reader.GetOrdinal("IsComplete")),
+                MinimumAge = reader.GetInt32(reader.GetOrdinal("MinimumAge")),
+                Words = reader.GetInt32(reader.GetOrdinal("Words")),
+                PublishDate = reader.GetDateTime(reader.GetOrdinal("PublishDate")),
+                UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate")),
+                MetaCheckDate = reader.GetDateTime(reader.GetOrdinal("MetaCheckDate"))
+            };
 
             return story;
         }

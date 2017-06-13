@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace FanfictionReader {
     internal partial class NewStoryForm : Form {
         private readonly List<Story> _stories = new List<Story>();
-        private Reader _reader;
+        private readonly Reader _reader;
 
         internal NewStoryForm(Reader reader) {
             InitializeComponent();

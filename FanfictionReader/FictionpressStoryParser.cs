@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -37,7 +36,7 @@ namespace FanfictionReader {
         /// <param name="story">The story of which the metadata should be updated</param>
         /// <returns>Whether it was successfull in making an update. False can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
         internal bool UpdateMeta(Story story) {
-            string html = "";
+            string html;
             try {
                 // The metadata is the same for each chapter and chapter 1 always exists.
                 html = GetHtml(story.Id, 1);
@@ -149,7 +148,7 @@ namespace FanfictionReader {
 
         private string GetHtml(int storyId, int chapterId) {
             var url = $"http://{_host}/s/{storyId}/{chapterId}";
-            using (var client = new System.Net.WebClient {Encoding = Encoding.UTF8 }){
+            using (var client = new WebClient {Encoding = Encoding.UTF8 }){
                 var html = client.DownloadString(url);
                 return html;
             }

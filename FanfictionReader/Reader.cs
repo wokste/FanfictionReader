@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Net;
@@ -61,8 +60,9 @@ namespace FanfictionReader {
         }
 
         private void RefreshPage() {
-            var page = new HtmlTemplate();
-            page.Chapter = GetChapter(_story, _story.LastReadChapterId + 1);
+            var page = new HtmlTemplate {
+                Chapter = GetChapter(_story, _story.LastReadChapterId + 1)
+            };
 
             OnPageRender?.Invoke(page);
         }
@@ -80,11 +80,12 @@ namespace FanfictionReader {
                 _chapterCache.SaveChapter(chapter);
                 return chapter;
             } catch (WebException ex) {
-                chapter = new Chapter();
-                chapter.ChapterId = 0;
-                chapter.Story = null;
-                chapter.HtmlText = $"<p>{ex.Message}</p>";
-                chapter.Title = "Error";
+                chapter = new Chapter {
+                    ChapterId = 0,
+                    Story = null,
+                    HtmlText = $"<p>{ex.Message}</p>",
+                    Title = "Error"
+                };
                 return chapter;
             }
         }

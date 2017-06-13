@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FanfictionReader {
     internal class ChapterCache {
@@ -39,12 +34,13 @@ namespace FanfictionReader {
         }
 
         private Chapter GetChapter(Story story, IDataRecord reader) {
-            var chapter = new Chapter();
-            chapter.Story = story;
-            chapter.ChapterId = reader.GetInt32(reader.GetOrdinal("ChapterId"));
-            chapter.Title = reader.GetString(reader.GetOrdinal("Title"));
-            chapter.HtmlText = reader.GetString(reader.GetOrdinal("HtmlText"));
-            
+            var chapter = new Chapter {
+                Story = story,
+                ChapterId = reader.GetInt32(reader.GetOrdinal("ChapterId")),
+                Title = reader.GetString(reader.GetOrdinal("Title")),
+                HtmlText = reader.GetString(reader.GetOrdinal("HtmlText"))
+            };
+
             return chapter;
         }
 
