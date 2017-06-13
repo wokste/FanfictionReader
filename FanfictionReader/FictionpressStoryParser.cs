@@ -26,7 +26,7 @@ namespace FanfictionReader {
             return new Chapter {
                 HtmlText = match.Value,
                 ChapterId = chapterId,
-                StoryPk = story.Pk,
+                Story = story,
                 Title = ""
             };
         }

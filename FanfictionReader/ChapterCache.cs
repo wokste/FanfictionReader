@@ -27,7 +27,7 @@ namespace FanfictionReader {
                 query.Parameters.AddWithValue("@ChapterId", chapterId);
                 using (var reader = query.ExecuteReader()) {
                     if (reader.Read()) {
-                        return GetChapter(reader);
+                        return GetChapter(story, reader);
                     }
                 }
             }
@@ -35,9 +35,9 @@ namespace FanfictionReader {
             return null;
         }
 
-        private Chapter GetChapter(IDataRecord reader) {
+        private Chapter GetChapter(Story story, IDataRecord reader) {
             var chapter = new Chapter();
-            chapter.StoryPk = reader.GetInt32(reader.GetOrdinal("StoryPk"));
+            chapter.Story = story;
             chapter.ChapterId = reader.GetInt32(reader.GetOrdinal("ChapterId"));
             chapter.Title = reader.GetString(reader.GetOrdinal("Title"));
             chapter.HtmlText = reader.GetString(reader.GetOrdinal("HtmlText"));
@@ -63,7 +63,7 @@ namespace FanfictionReader {
                     (StoryPk, ChapterId, Title, HtmlText)
                     VALUES (@StoryPk, @ChapterId, @Title, @HtmlText)"
                 , _conn)) {
-                query.Parameters.AddWithValue("@StoryPk", chapter.StoryPk);
+                query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
                 query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
                 query.Parameters.AddWithValue("@Title", chapter.Title);
                 query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
@@ -77,7 +77,7 @@ namespace FanfictionReader {
                     SET Title = @Title, HtmlText = @HtmlText
                     WHERE StoryPk = @StoryPk AND ChapterId = @ChapterId", _conn)) {
 
-                query.Parameters.AddWithValue("@StoryPk", chapter.StoryPk);
+                query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
                 query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
                 query.Parameters.AddWithValue("@Title", chapter.Title);
                 query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);

@@ -42,10 +42,10 @@ namespace FanfictionReader {
             story.LastReadDate = DateTime.Now;
             
             var page = new HtmlTemplate();
-            page.Body = GetChapter(story, story.LastReadChapterId + 1).HtmlText;
-            storyReader.DocumentText = page.MakeHtml();
+            page.Chapter = GetChapter(story, story.LastReadChapterId + 1);
+            storyReader.DocumentText = page.Html;
 
-            Text = "FanfictionReader - " + story;
+            Text = "FanfictionReader - " + page.Title;
             Properties.Settings.Default.LastReadFic = story.Pk;
 
             Properties.Settings.Default.Save();
@@ -55,7 +55,6 @@ namespace FanfictionReader {
 
         private Chapter GetChapter(Story story, int chapterId) {
             var storyParser = new FictionpressStoryParser();
-            storyParser.UpdateMeta(story);
             _storyController.SaveStory(story);
 
             var chapter = _chapterCache.GetChapterIfExists(story, chapterId);
@@ -63,12 +62,13 @@ namespace FanfictionReader {
                 return chapter;
             try {
                 chapter = storyParser.GetChapter(story, chapterId);
+                storyParser.UpdateMeta(story);
                 _chapterCache.SaveChapter(chapter);
                 return chapter;
             } catch (WebException ex) {
                 chapter = new Chapter();
-                chapter.ChapterId = -1;
-                chapter.StoryPk = -1;
+                chapter.ChapterId = 0;
+                chapter.Story = null;
                 chapter.HtmlText = $"<p>{ex.Message}</p>";
                 chapter.Title = "Error";
                 return chapter;
