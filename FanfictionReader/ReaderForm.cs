@@ -38,12 +38,14 @@ namespace FanfictionReader {
                 Properties.Settings.Default.LastReadFic = 0;
 
             } else {
+                story.LastReadDate = DateTime.Now;
+
                 var storyParser = new FictionpressStoryParser();
                 storyParser.UpdateMeta(story);
 
                 var page = new HtmlTemplate
                 {
-                    Body = storyParser.GetStoryText(story.Id, story.ChapterId)
+                    Body = storyParser.GetStoryText(story.Id, story.LastReadChapterId)
                 };
                 storyReader.DocumentText = page.MakeHtml();
                 Text = "FanfictionReader - " + story;
@@ -65,16 +67,16 @@ namespace FanfictionReader {
         }
 
         private void PreviousChapterMenuClick(object sender, EventArgs e) {
-            if (_story.ChapterId <= 1)
+            if (_story.LastReadChapterId <= 1)
                 return;
 
-            _story.ChapterId--;
+            _story.LastReadChapterId--;
             _storyController.SaveStory(_story);
             OpenStory(_story);
         }
 
         private void NextChapterMenuClick(object sender, EventArgs e) {
-            _story.ChapterId++;
+            _story.LastReadChapterId++;
             _storyController.SaveStory(_story);
             OpenStory(_story);
         }

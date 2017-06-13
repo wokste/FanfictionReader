@@ -53,13 +53,14 @@ namespace FanfictionReader {
                 UpdateMetaValue(story, key, value);
             }
 
+            story.MetaCheckDate = DateTime.Now;
             return true;
         }
 
         private void UpdateMetaValue(Story story, string key, string value) {
             switch (key) {
                 case "Chapters":
-                    story.Chapters = TokenToInt(value);
+                    story.ChapterCount = TokenToInt(value);
                     return;
                 case "Words":
                     story.Words = TokenToInt(value);
@@ -74,10 +75,10 @@ namespace FanfictionReader {
                     story.Follows = TokenToInt(value);
                     return;
                 case "Complete":
-                    story.Complete = true;
+                    story.IsComplete = true;
                     return;
                 case "Rated":
-                    story.MinimiumAge = TokenToRating(value);
+                    story.MinimumAge = TokenToRating(value);
                     return;
                 case "Updated":
                     story.UpdateDate = TokenToDate(value);
