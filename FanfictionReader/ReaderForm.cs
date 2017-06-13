@@ -6,6 +6,7 @@ using System.Windows.Forms;
 namespace FanfictionReader {
     public partial class ReaderForm : Form {
         private readonly StoryController _storyController;
+        private readonly ChapterCache _chapterCache;
 
         private Story _story;
 
@@ -15,6 +16,7 @@ namespace FanfictionReader {
             var conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
             conn.Open();
             _storyController = new StoryController(conn);
+            _chapterCache = new ChapterCache(conn);
 
             var lastReadStory = Properties.Settings.Default.LastReadFic;
             OpenStory(_storyController.GetStory(lastReadStory));
@@ -34,32 +36,43 @@ namespace FanfictionReader {
             _story = story;
 
             if (story == null) {
-                storyReader.Navigate("about:blank");
-                Text = "FanfictionReader";
-                Properties.Settings.Default.LastReadFic = 0;
-
-            } else {
-                story.LastReadDate = DateTime.Now;
-
-                var storyParser = new FictionpressStoryParser();
-                storyParser.UpdateMeta(story);
-
-                var page = new HtmlTemplate();
-
-                try {
-                    page.Body = storyParser.GetStoryText(story.Id, story.LastReadChapterId);
-                } catch (WebException ex) {
-                    page.Body = $"<p>{ex.Message}</p>";
-                }
-
-                storyReader.DocumentText = page.MakeHtml();
-
-                Text = "FanfictionReader - " + story;
-                Properties.Settings.Default.LastReadFic = story.SqlPk;
+                return;
             }
+
+            story.LastReadDate = DateTime.Now;
+            
+            var page = new HtmlTemplate();
+            page.Body = GetChapter(story, story.LastReadChapterId + 1).HtmlText;
+            storyReader.DocumentText = page.MakeHtml();
+
+            Text = "FanfictionReader - " + story;
+            Properties.Settings.Default.LastReadFic = story.Pk;
+
             Properties.Settings.Default.Save();
 
             RefreshStoryList();
+        }
+
+        private Chapter GetChapter(Story story, int chapterId) {
+            var storyParser = new FictionpressStoryParser();
+            storyParser.UpdateMeta(story);
+            _storyController.SaveStory(story);
+
+            var chapter = _chapterCache.GetChapterIfExists(story, chapterId);
+            if (chapter != null)
+                return chapter;
+            try {
+                chapter = storyParser.GetChapter(story, chapterId);
+                _chapterCache.SaveChapter(chapter);
+                return chapter;
+            } catch (WebException ex) {
+                chapter = new Chapter();
+                chapter.ChapterId = -1;
+                chapter.StoryPk = -1;
+                chapter.HtmlText = $"<p>{ex.Message}</p>";
+                chapter.Title = "Error";
+                return chapter;
+            }
         }
 
         private void StoryClicked(object sender, EventArgs e) {

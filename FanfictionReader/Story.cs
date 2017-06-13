@@ -3,7 +3,7 @@
 namespace FanfictionReader {
     internal class Story {
         /// <summary>The primary key in the database. 0 is not in the database.</summary>
-        internal long SqlPk;
+        internal long Pk;
         
         internal int Id;
         internal string Title;

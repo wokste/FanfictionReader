@@ -1,4 +1,6 @@
-﻿CREATE TABLE Story (
+﻿--SQL to be executed on a new SQLite Databse. Other database systems are not supported.
+
+CREATE TABLE Story (
     Pk                INTEGER  PRIMARY KEY AUTOINCREMENT
                                NOT NULL,
     Host              STRING   NOT NULL,
@@ -28,4 +30,17 @@
                                DEFAULT NULL,
     MetaCheckDate     DATETIME NOT NULL
                                DEFAULT NULL
+);
+
+CREATE TABLE Chapter (
+    HtmlText STRING  NOT NULL,
+    Title    STRING,
+    StoryPk  INTEGER NOT NULL,
+    Id       INTEGER NOT NULL
+);
+
+
+CREATE UNIQUE INDEX UniqueChapter ON Chapter (
+    StoryPk,
+    Id
 );

@@ -16,7 +16,7 @@ namespace FanfictionReader {
             var story = new Story
             {
                 Host = words[0],
-                SqlPk = 0,
+                Pk = 0,
                 Id = int.Parse(words[2]),
                 LastReadChapterId = int.Parse(words[3]),
                 Title = words[4]

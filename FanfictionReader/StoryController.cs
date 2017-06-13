@@ -39,7 +39,7 @@ namespace FanfictionReader {
 
         private Story GetStory(IDataRecord reader) {
             var story = new Story();
-            story.SqlPk = reader.GetInt32(reader.GetOrdinal("PK"));
+            story.Pk = reader.GetInt32(reader.GetOrdinal("PK"));
             story.Id = reader.GetInt32(reader.GetOrdinal("Id"));
             story.Title = reader.GetString(reader.GetOrdinal("Title"));
             story.LastReadChapterId = reader.GetInt32(reader.GetOrdinal("LastReadChapterId"));
@@ -59,7 +59,7 @@ namespace FanfictionReader {
         }
 
         internal void SaveStory(Story story) {
-            if (story.SqlPk == 0) {
+            if (story.Pk == 0) {
                 InsertStory(story);
             } else {
                 UpdateStory(story);
@@ -93,15 +93,15 @@ namespace FanfictionReader {
             }
 
             using (var query = new SQLiteCommand("select last_insert_rowid()", _conn)) {
-                story.SqlPk = (long)query.ExecuteScalar();
+                story.Pk = (long)query.ExecuteScalar();
             }
         }
 
         private void UpdateStory(Story story) {
             using (var query = new SQLiteCommand(@"UPDATE Story
                     SET LastReadDate = @LastReadDate, LastReadChapterId = @LastReadChapterId, AuthorId = @AuthorId, ChapterCount = @ChapterCount, IsComplete = @IsComplete, MinimumAge = @MinimumAge, Words = @Words, PublishDate = @PublishDate, UpdateDate = @UpdateDate, MetaCheckDate = @MetaCheckDate
-                    WHERE SqlPk = @SqlPk", _conn)) {
-                query.Parameters.AddWithValue("@SqlPk", story.SqlPk);
+                    WHERE Pk = @Pk", _conn)) {
+                query.Parameters.AddWithValue("@Pk", story.Pk);
 
                 query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
                 query.Parameters.AddWithValue("@LastReadChapterId", story.LastReadChapterId);

@@ -14,16 +14,21 @@ namespace FanfictionReader {
         private readonly Regex _metadataRegex = new Regex(@"Rated:(.+)");
         private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
 
-        internal string GetStoryText(int storyId, int chapterId) {
-            string html = GetHtml(storyId, chapterId);
+        internal Chapter GetChapter(Story story, int chapterId) {
+            string html = GetHtml(story.Id, chapterId);
 
             var match = _storyTextRegex.Match(html);
 
             if (!match.Success) {
-                return "";
+                return null;
             }
 
-            return match.Value;
+            return new Chapter {
+                HtmlText = match.Value,
+                ChapterId = chapterId,
+                StoryPk = story.Pk,
+                Title = ""
+            };
         }
 
         /// <summary>
@@ -120,6 +125,7 @@ namespace FanfictionReader {
         /// <param name="rateStr"></param>
         /// <returns>The minimum age or -1 if no formatting could be found</returns>
         private int TokenToRating(string rateStr) {
+            rateStr = rateStr.Replace("  ", " ");
             switch (rateStr) {
                 case "Fiction K":
                     return 5;
@@ -132,7 +138,7 @@ namespace FanfictionReader {
                 case "Fiction MA":
                     return 18;
                 default:
-                    return -1;
+                    return 0;
             }
         }
 
