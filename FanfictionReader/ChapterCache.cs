@@ -21,13 +21,16 @@ namespace FanfictionReader {
         /// <param name="chapterId">The chapter id of the story.</param>
         /// <returns>A chapter if it is the cache. Null otherwise.</returns>
         internal Chapter GetChapterIfExists(Story story, int chapterId) {
-
-            using (var query = new SQLiteCommand("SELECT * FROM Chapter WHERE StoryPk = @StoryPk AND ChapterId = @ChapterId", _conn)) {
-                query.Parameters.AddWithValue("@StoryPk", story.Pk);
-                query.Parameters.AddWithValue("@ChapterId", chapterId);
-                using (var reader = query.ExecuteReader()) {
-                    if (reader.Read()) {
-                        return GetChapter(story, reader);
+            lock (_conn) {
+                using (var query =
+                    new SQLiteCommand("SELECT * FROM Chapter WHERE StoryPk = @StoryPk AND ChapterId = @ChapterId",
+                        _conn)) {
+                    query.Parameters.AddWithValue("@StoryPk", story.Pk);
+                    query.Parameters.AddWithValue("@ChapterId", chapterId);
+                    using (var reader = query.ExecuteReader()) {
+                        if (reader.Read()) {
+                            return GetChapter(story, reader);
+                        }
                     }
                 }
             }
@@ -59,31 +62,35 @@ namespace FanfictionReader {
         }
 
         private void InsertChapter(Chapter chapter) {
-            using (var query = new SQLiteCommand(@"INSERT INTO Chapter
+            lock (_conn) {
+                using (var query = new SQLiteCommand(@"INSERT INTO Chapter
                     (StoryPk, ChapterId, Title, HtmlText)
                     VALUES (@StoryPk, @ChapterId, @Title, @HtmlText)"
-                , _conn)) {
-                query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
-                query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
-                query.Parameters.AddWithValue("@Title", chapter.Title);
-                query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
+                    , _conn)) {
+                    query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
+                    query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
+                    query.Parameters.AddWithValue("@Title", chapter.Title);
+                    query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
 
-                query.ExecuteNonQuery();
+                    query.ExecuteNonQuery();
+                }
             }
         }
 
         private bool UpdateChapter(Chapter chapter) {
-            using (var query = new SQLiteCommand(@"UPDATE Chapter
+            lock (_conn) {
+                using (var query = new SQLiteCommand(@"UPDATE Chapter
                     SET Title = @Title, HtmlText = @HtmlText
                     WHERE StoryPk = @StoryPk AND ChapterId = @ChapterId", _conn)) {
 
-                query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
-                query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
-                query.Parameters.AddWithValue("@Title", chapter.Title);
-                query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
+                    query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
+                    query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
+                    query.Parameters.AddWithValue("@Title", chapter.Title);
+                    query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
 
-                var rows = query.ExecuteNonQuery();
-                return (rows > 0);
+                    var rows = query.ExecuteNonQuery();
+                    return (rows > 0);
+                }
             }
         }
     }

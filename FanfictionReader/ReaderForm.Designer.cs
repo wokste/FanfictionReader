@@ -31,7 +31,6 @@
             this.storyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.previousChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -90,8 +89,7 @@
             // 
             this.storyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.previousChapterToolStripMenuItem,
-            this.nextChapterToolStripMenuItem,
-            this.refreshToolStripMenuItem1});
+            this.nextChapterToolStripMenuItem});
             this.storyToolStripMenuItem.Name = "storyToolStripMenuItem";
             this.storyToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.storyToolStripMenuItem.Text = "Story";
@@ -111,14 +109,6 @@
             this.nextChapterToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.nextChapterToolStripMenuItem.Text = "Next Chapter";
             this.nextChapterToolStripMenuItem.Click += new System.EventHandler(this.NextChapterMenuClick);
-            // 
-            // refreshToolStripMenuItem1
-            // 
-            this.refreshToolStripMenuItem1.Name = "refreshToolStripMenuItem1";
-            this.refreshToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem1.Size = new System.Drawing.Size(218, 22);
-            this.refreshToolStripMenuItem1.Text = "Refresh";
-            this.refreshToolStripMenuItem1.Click += new System.EventHandler(this.RefreshStoryMenuClick);
             // 
             // splitContainer1
             // 
@@ -169,7 +159,6 @@
         private System.Windows.Forms.ToolStripMenuItem nextChapterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addStoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem1;
         private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

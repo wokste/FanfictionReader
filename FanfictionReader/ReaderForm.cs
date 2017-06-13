@@ -64,11 +64,7 @@ namespace FanfictionReader {
         private void NextChapterMenuClick(object sender, EventArgs e) {
             _reader.NextChapter();
         }
-
-        private void RefreshLibraryMenuClick(object sender, EventArgs e) {
-            InitStoryList();
-        }
-
+        
         private void RefreshStoryMenuClick(object sender, EventArgs e) {
             throw new NotImplementedException();
         }

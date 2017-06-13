@@ -16,6 +16,13 @@ namespace FanfictionReader {
 
         internal Action<HtmlTemplate> OnPageRender;
 
+        internal Reader() {
+            var conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
+            conn.Open();
+            _storyController = new StoryController(conn);
+            _chapterCache = new ChapterCache(conn);
+        }
+
         public void SelectStory(Story story) {
             _story = story;
             RefreshPage();
@@ -24,13 +31,6 @@ namespace FanfictionReader {
         internal void SaveStory(Story story) {
             _storyController.SaveStory(story);
             OnStoryUpdate?.Invoke(story);
-        }
-
-        internal Reader() {
-            var conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
-            conn.Open();
-            _storyController = new StoryController(conn);
-            _chapterCache = new ChapterCache(conn);
         }
 
         internal void LoadLastStory() {

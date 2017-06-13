@@ -13,10 +13,12 @@ namespace FanfictionReader {
 
         internal IList<Story> GetStoryList() {
             var list = new List<Story>();
-            using (var query = new SQLiteCommand("SELECT * FROM Story", _conn)) {
-                using (var reader = query.ExecuteReader()) {
-                    while (reader.Read()) {
-                        list.Add(GetStory(reader));
+            lock (_conn) {
+                using (var query = new SQLiteCommand("SELECT * FROM Story", _conn)) {
+                    using (var reader = query.ExecuteReader()) {
+                        while (reader.Read()) {
+                            list.Add(GetStory(reader));
+                        }
                     }
                 }
             }
@@ -25,11 +27,13 @@ namespace FanfictionReader {
         }
 
         internal Story GetStory(long pk) {
-            using (var query = new SQLiteCommand("SELECT * FROM Story WHERE PK = @Pk", _conn)) {
-                query.Parameters.AddWithValue("@Pk", pk);
-                using (var reader = query.ExecuteReader()) {
-                    if (reader.Read()) {
-                        return GetStory(reader);
+            lock (_conn) {
+                using (var query = new SQLiteCommand("SELECT * FROM Story WHERE PK = @Pk", _conn)) {
+                    query.Parameters.AddWithValue("@Pk", pk);
+                    using (var reader = query.ExecuteReader()) {
+                        if (reader.Read()) {
+                            return GetStory(reader);
+                        }
                     }
                 }
             }
@@ -70,54 +74,56 @@ namespace FanfictionReader {
         private void InsertStory(Story story) {
             story.AddDate = DateTime.Now;
 
-            using (var query = new SQLiteCommand(@"INSERT INTO Story
+            lock (_conn) {
+                using (var query = new SQLiteCommand(@"INSERT INTO Story
                     (Id, Title, LastReadChapterId, Host, AddDate, LastReadDate, AuthorId, ChapterCount, IsComplete, MinimumAge, Words, PublishDate, UpdateDate, MetaCheckDate)
                     VALUES (@Id, @Title, @LastReadChapterId, @Host, @AddDate, @LastReadDate, @AuthorId, @ChapterCount, @IsComplete, @MinimumAge, @Words, @PublishDate, @UpdateDate, @MetaCheckDate)"
                     , _conn)) {
-                query.Parameters.AddWithValue("@Id", story.Id);
-                query.Parameters.AddWithValue("@Title", story.Title);
-                query.Parameters.AddWithValue("@Host", story.Host);
-                query.Parameters.AddWithValue("@AddDate", story.AddDate);
-                query.Parameters.AddWithValue("@LastReadChapterId", story.LastReadChapterId);
-                query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
-                query.Parameters.AddWithValue("@AuthorId", story.AuthorId);
-                query.Parameters.AddWithValue("@ChapterCount", story.ChapterCount);
-                query.Parameters.AddWithValue("@IsComplete", story.IsComplete);
-                query.Parameters.AddWithValue("@MinimumAge", story.MinimumAge);
-                query.Parameters.AddWithValue("@Words", story.Words);
-                query.Parameters.AddWithValue("@PublishDate", story.PublishDate);
-                query.Parameters.AddWithValue("@UpdateDate", story.UpdateDate);
-                query.Parameters.AddWithValue("@MetaCheckDate", story.MetaCheckDate);
+                    query.Parameters.AddWithValue("@Id", story.Id);
+                    query.Parameters.AddWithValue("@Title", story.Title);
+                    query.Parameters.AddWithValue("@Host", story.Host);
+                    query.Parameters.AddWithValue("@AddDate", story.AddDate);
+                    query.Parameters.AddWithValue("@LastReadChapterId", story.LastReadChapterId);
+                    query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
+                    query.Parameters.AddWithValue("@AuthorId", story.AuthorId);
+                    query.Parameters.AddWithValue("@ChapterCount", story.ChapterCount);
+                    query.Parameters.AddWithValue("@IsComplete", story.IsComplete);
+                    query.Parameters.AddWithValue("@MinimumAge", story.MinimumAge);
+                    query.Parameters.AddWithValue("@Words", story.Words);
+                    query.Parameters.AddWithValue("@PublishDate", story.PublishDate);
+                    query.Parameters.AddWithValue("@UpdateDate", story.UpdateDate);
+                    query.Parameters.AddWithValue("@MetaCheckDate", story.MetaCheckDate);
 
-                query.ExecuteNonQuery();
-            }
-
-            using (var query = new SQLiteCommand("select last_insert_rowid()", _conn)) {
-                story.Pk = (long)query.ExecuteScalar();
+                    query.ExecuteNonQuery();
+                }
+                using (var query = new SQLiteCommand("select last_insert_rowid()", _conn)) {
+                    story.Pk = (long)query.ExecuteScalar();
+                }
             }
         }
 
         private void UpdateStory(Story story) {
-            using (var query = new SQLiteCommand(@"UPDATE Story
+            lock (_conn) {
+                using (var query = new SQLiteCommand(@"UPDATE Story
                     SET LastReadDate = @LastReadDate, LastReadChapterId = @LastReadChapterId, AuthorId = @AuthorId, ChapterCount = @ChapterCount, IsComplete = @IsComplete, MinimumAge = @MinimumAge, Words = @Words, PublishDate = @PublishDate, UpdateDate = @UpdateDate, MetaCheckDate = @MetaCheckDate
                     WHERE Pk = @Pk", _conn)) {
-                query.Parameters.AddWithValue("@Pk", story.Pk);
+                    query.Parameters.AddWithValue("@Pk", story.Pk);
 
-                query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
-                query.Parameters.AddWithValue("@LastReadChapterId", story.LastReadChapterId);
-                query.Parameters.AddWithValue("@Title", story.Title);
-                query.Parameters.AddWithValue("@AuthorId", story.AuthorId);
-                query.Parameters.AddWithValue("@ChapterCount", story.ChapterCount);
-                query.Parameters.AddWithValue("@IsComplete", story.IsComplete);
-                query.Parameters.AddWithValue("@MinimumAge", story.MinimumAge);
-                query.Parameters.AddWithValue("@Words", story.Words);
-                query.Parameters.AddWithValue("@PublishDate", story.PublishDate);
-                query.Parameters.AddWithValue("@UpdateDate", story.UpdateDate);
-                query.Parameters.AddWithValue("@MetaCheckDate", story.MetaCheckDate);
+                    query.Parameters.AddWithValue("@LastReadDate", story.LastReadDate);
+                    query.Parameters.AddWithValue("@LastReadChapterId", story.LastReadChapterId);
+                    query.Parameters.AddWithValue("@Title", story.Title);
+                    query.Parameters.AddWithValue("@AuthorId", story.AuthorId);
+                    query.Parameters.AddWithValue("@ChapterCount", story.ChapterCount);
+                    query.Parameters.AddWithValue("@IsComplete", story.IsComplete);
+                    query.Parameters.AddWithValue("@MinimumAge", story.MinimumAge);
+                    query.Parameters.AddWithValue("@Words", story.Words);
+                    query.Parameters.AddWithValue("@PublishDate", story.PublishDate);
+                    query.Parameters.AddWithValue("@UpdateDate", story.UpdateDate);
+                    query.Parameters.AddWithValue("@MetaCheckDate", story.MetaCheckDate);
 
-                query.ExecuteNonQuery();
+                    query.ExecuteNonQuery();
+                }
             }
         }
-
     }
 }
