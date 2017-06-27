@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace FanfictionReader {
     public partial class ReaderForm : Form {
         private Reader _reader;
+
+        private IList<Story> _storyList;
 
         public ReaderForm() {
             InitializeComponent();
@@ -15,31 +19,38 @@ namespace FanfictionReader {
             _reader.OnStoryDelete += StoryDeleted;
 
             _reader.LoadLastStory();
-            InitStoryList();
+
+            _storyList = _reader.GetStoryList();
+            UpdateShownStories();
         }
 
         private void StoryUpdated(Story story) {
-            if (storyListBox.Items.Contains(story)) {
-                storyListBox.Refresh();
+            if (!_storyList.Contains(story)) {
+                _storyList.Add(story);
+                _storyList.OrderBy(s => s.LastReadChapterId);
             }
-            else {
-                storyListBox.Items.Add(story);
-            }
+            storyListBox.Refresh();
         }
         
         private void StoryDeleted(Story story) {
-            storyListBox.Items.Remove(story);
+            _storyList.Remove(story);
+            storyListBox.Refresh();
         }
 
-        private void InitStoryList() {
-            //TODO: This function should be called in the constructor only.
-            var storyList = _reader.GetStoryList();
+        private void UpdateShownStories() {
+            IList<Story> shownStoryList = _storyList;
 
-            storyListBox.Items.Clear();
+            var filters = FilterTextBox.Text.Split(' ').Where(s => s != "");
 
-            foreach (var story in storyList) {
-                storyListBox.Items.Add(story);
+            foreach (var filter in filters) {
+                shownStoryList = shownStoryList.Where(
+                    story => (
+                        story.Title.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1
+                    )
+                ).ToList();
             }
+
+            storyListBox.DataSource = shownStoryList;
         }
 
         private void RenderPage(HtmlTemplate page) {
@@ -63,6 +74,10 @@ namespace FanfictionReader {
 
         private void NextChapterMenuClick(object sender, EventArgs e) {
             _reader.LastReadChapterId++;
+        }
+
+        private void FilterTextBox_TextChanged(object sender, EventArgs e) {
+            UpdateShownStories();
         }
     }
 }
