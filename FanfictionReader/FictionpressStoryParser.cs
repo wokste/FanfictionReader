@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FanfictionReader {
     internal class FictionpressStoryParser {
@@ -147,9 +149,9 @@ namespace FanfictionReader {
         }
 
         private string GetHtml(int storyId, int chapterId) {
-            var url = $"http://{_host}/s/{storyId}/{chapterId}";
+            var uri = new System.Uri($"http://{_host}/s/{storyId}/{chapterId}");
             using (var client = new WebClient {Encoding = Encoding.UTF8 }){
-                var html = client.DownloadString(url);
+                var html = client.DownloadString(uri);
                 return html;
             }
         }

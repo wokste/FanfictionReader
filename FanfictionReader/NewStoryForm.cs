@@ -16,7 +16,7 @@ namespace FanfictionReader {
 
         private void okButton_Click(object sender, EventArgs e) {
             foreach (var story in _stories) {
-                _reader.SaveStory(story);
+                _reader.SaveStoryAsync(story);
             }
 
             Close();

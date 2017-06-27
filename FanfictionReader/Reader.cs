@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace FanfictionReader {
     class Reader {
@@ -18,7 +19,7 @@ namespace FanfictionReader {
             get { return _story; }
             set {
                 _story = value;
-                RefreshPage();
+                var task = RefreshPageAsync();
             }
         }
 
@@ -36,8 +37,8 @@ namespace FanfictionReader {
 
                 _story.LastReadChapterId = value;
                 _storyController.SaveStory(_story);
-                RefreshPage();
                 OnStoryUpdate?.Invoke(_story);
+                var task = RefreshPageAsync();
             }
         }
 
@@ -47,9 +48,12 @@ namespace FanfictionReader {
             _storyController = new StoryController(conn);
             _chapterCache = new ChapterCache(conn);
         }
-        
 
-        internal void SaveStory(Story story) {
+        internal Task SaveStoryAsync(Story story) {
+            return Task.Run(() => SaveStory(story));
+        }
+
+        private void SaveStory(Story story) {
             _storyController.SaveStory(story);
             OnStoryUpdate?.Invoke(story);
         }
@@ -57,14 +61,23 @@ namespace FanfictionReader {
         internal void LoadLastStory() {
             var lastReadStory = Properties.Settings.Default.LastReadFic;
             Story = _storyController.GetStory(lastReadStory);
+            var task = RefreshPageAsync();
+        }
+        
+        internal IList<Story> GetStoryList() {
+            return _storyController.GetStoryList();
         }
 
-        private void RefreshPage() {
-            var page = new HtmlTemplate {
-                Chapter = GetChapter(_story, _story.LastReadChapterId + 1)
-            };
+        private async Task RefreshPageAsync() {
+            
+            var page = new HtmlTemplate();
+            page.Chapter = await GetChapterAsync(_story, _story.LastReadChapterId + 1);
 
             OnPageRender?.Invoke(page);
+        }
+
+        private Task<Chapter> GetChapterAsync(Story story, int chapterId) {
+            return Task.Run(() => GetChapter(story, chapterId));
         }
 
         private Chapter GetChapter(Story story, int chapterId) {
@@ -88,10 +101,6 @@ namespace FanfictionReader {
                 };
                 return chapter;
             }
-        }
-
-        internal IList<Story> GetStoryList() {
-            return _storyController.GetStoryList();
         }
     }
 }
