@@ -50,12 +50,10 @@ namespace FanfictionReader {
         }
 
         internal Task SaveStoryAsync(Story story) {
-            return Task.Run(() => SaveStory(story));
-        }
-
-        private void SaveStory(Story story) {
-            _storyController.SaveStory(story);
-            OnStoryUpdate?.Invoke(story);
+            
+            var storyClone = story.Clone() as Story;
+            OnStoryUpdate?.Invoke(storyClone);
+            return Task.Run(() => _storyController.SaveStory(storyClone));
         }
 
         internal void LoadLastStory() {
@@ -69,9 +67,11 @@ namespace FanfictionReader {
         }
 
         private async Task RefreshPageAsync() {
-            
+            var story = _story.Clone() as Story;
+
             var page = new HtmlTemplate();
-            page.Chapter = await GetChapterAsync(_story, _story.LastReadChapterId + 1);
+            page.Chapter = await GetChapterAsync(story, story.LastReadChapterId + 1);
+            await SaveStoryAsync(story);
 
             OnPageRender?.Invoke(page);
         }

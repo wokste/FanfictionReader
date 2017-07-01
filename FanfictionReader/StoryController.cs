@@ -69,7 +69,6 @@ namespace FanfictionReader {
             } else {
                 UpdateStory(story);
             }
-                
         }
 
         private void InsertStory(Story story) {

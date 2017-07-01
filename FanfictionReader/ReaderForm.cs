@@ -27,14 +27,13 @@ namespace FanfictionReader {
         private void StoryUpdated(Story story) {
             if (!_storyList.Contains(story)) {
                 _storyList.Add(story);
-                _storyList.OrderBy(s => s.LastReadChapterId);
             }
-            storyListBox.Refresh();
+            UpdateShownStories();
         }
         
         private void StoryDeleted(Story story) {
             _storyList.Remove(story);
-            storyListBox.Refresh();
+            UpdateShownStories();
         }
 
         private void UpdateShownStories() {
@@ -49,6 +48,8 @@ namespace FanfictionReader {
                     )
                 ).ToList();
             }
+            
+            _storyList = _storyList.OrderBy(s => s.Title).ToList();
 
             storyListBox.DataSource = shownStoryList;
         }
