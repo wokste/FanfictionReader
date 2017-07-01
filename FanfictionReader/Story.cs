@@ -6,28 +6,16 @@ namespace FanfictionReader {
         internal long Pk;
         
         internal int Id;
-        internal string Title;
-        internal int LastReadChapterId;
         internal string Host;
+
+        internal int LastReadChapterId;
         internal DateTime AddDate;
         internal DateTime LastReadDate;
 
-        internal int AuthorId = 0;
-        internal int ChapterCount = 0;
-        internal int Words = 0;
-        internal bool IsComplete = false;
-        internal int MinimumAge = 5;
-        internal DateTime UpdateDate;
-        internal DateTime PublishDate;
-        internal DateTime MetaCheckDate;
-
-        // TODO: Add the following fields in the database
-        internal int Favs = 0;
-        internal int Follows = 0;
-        internal int Reviews = 0;
-
+        internal StoryMeta MetaData = new StoryMeta();
+        
         public override string ToString() {
-            return $"{Title} ({LastReadChapterId} / {ChapterCount})";
+            return $"{MetaData.Title} ({LastReadChapterId} / {MetaData.ChapterCount})";
         }
     }
 }

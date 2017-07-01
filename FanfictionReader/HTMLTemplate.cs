@@ -7,7 +7,7 @@
 
         internal string Title {
             get {
-                var storyTitle = Chapter.Story?.Title;
+                var storyTitle = Chapter.Story?.MetaData?.Title;
                 var chapterTitle = Chapter.Title;
 
 

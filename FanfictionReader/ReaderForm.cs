@@ -44,12 +44,12 @@ namespace FanfictionReader {
             foreach (var filter in filters) {
                 shownStoryList = shownStoryList.Where(
                     story => (
-                        story.Title.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1
+                        story.MetaData.Title.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1
                     )
                 ).ToList();
             }
             
-            _storyList = _storyList.OrderBy(s => s.Title).ToList();
+            _storyList = _storyList.OrderBy(s => s.MetaData.Title).ToList();
 
             storyListBox.DataSource = shownStoryList;
         }

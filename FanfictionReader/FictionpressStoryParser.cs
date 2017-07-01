@@ -12,7 +12,7 @@ namespace FanfictionReader {
 
         private readonly Regex _storyTextRegex = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
 
-        private readonly Regex _metadataRegex = new Regex(@"Rated:(.+)");
+        private readonly Regex _metaDataRegex = new Regex(@"Rated:(.+)");
         private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
 
         internal Chapter GetChapter(Story story, int chapterId) {
@@ -36,70 +36,72 @@ namespace FanfictionReader {
         /// Update the metadata of the story by making a request to the server.
         /// </summary>
         /// <param name="story">The story of which the metadata should be updated</param>
-        /// <returns>Whether it was successfull in making an update. False can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
-        internal bool UpdateMeta(Story story) {
+        /// <returns>If the MetaData is reetrieved correctly, a StoryMeta object with the information. Null can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
+        internal StoryMeta GetMeta(Story story) {
             string html;
             try {
                 // The metadata is the same for each chapter and chapter 1 always exists.
                 html = GetHtml(story.Id, 1);
             }
             catch (WebException) {
-                return false;
+                return null;
             }
 
-            var metadataMatch = _metadataRegex.Match(html);
-            if (!metadataMatch.Success) {
-                return false;
+            var metaDataMatch = _metaDataRegex.Match(html);
+            if (!metaDataMatch.Success) {
+                return null;
             }
 
-            var metaData = metadataMatch.Value;
+            var metaDataString = metaDataMatch.Value;
 
-            metaData = _htmlTagRegex.Replace(metaData, "");
+            metaDataString = _htmlTagRegex.Replace(metaDataString, "");
 
-            var tokens = metaData.Replace("Sci-Fi", "Sci+Fi").Split('-').Select(
+            var tokens = metaDataString.Replace("Sci-Fi", "Sci+Fi").Split('-').Select(
                 s => s.Trim().Replace("Sci+Fi", "Sci-Fi")
             );
+
+            var meta = new StoryMeta();
 
             foreach (var token in tokens) {
                 var split = token.Split(':').Select(s => s.Trim()).ToArray();
                 var key = split[0];
                 var value = (split.Length > 1) ? split[1] : "";
 
-                UpdateMetaValue(story, key, value);
+                UpdateMetaValue(meta, key, value);
             }
 
-            story.MetaCheckDate = DateTime.Now;
-            return true;
+            meta.MetaCheckDate = DateTime.Now;
+            return meta;
         }
 
-        private void UpdateMetaValue(Story story, string key, string value) {
+        private void UpdateMetaValue(StoryMeta meta, string key, string value) {
             switch (key) {
                 case "Chapters":
-                    story.ChapterCount = TokenToInt(value);
+                    meta.ChapterCount = TokenToInt(value);
                     return;
                 case "Words":
-                    story.Words = TokenToInt(value);
+                    meta.Words = TokenToInt(value);
                     return;
                 case "Reviews":
-                    story.Reviews = TokenToInt(value);
+                    meta.Reviews = TokenToInt(value);
                     return;
                 case "Favs":
-                    story.Favs = TokenToInt(value);
+                    meta.Favs = TokenToInt(value);
                     return;
                 case "Follows":
-                    story.Follows = TokenToInt(value);
+                    meta.Follows = TokenToInt(value);
                     return;
                 case "Complete":
-                    story.IsComplete = true;
+                    meta.IsComplete = true;
                     return;
                 case "Rated":
-                    story.MinimumAge = TokenToRating(value);
+                    meta.MinimumAge = TokenToRating(value);
                     return;
                 case "Updated":
-                    story.UpdateDate = TokenToDate(value);
+                    meta.UpdateDate = TokenToDate(value);
                     return;
                 case "Published":
-                    story.PublishDate = TokenToDate(value);
+                    meta.PublishDate = TokenToDate(value);
                     return;
                 default: {
                     

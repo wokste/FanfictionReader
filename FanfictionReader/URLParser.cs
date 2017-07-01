@@ -18,8 +18,7 @@ namespace FanfictionReader {
                 Host = words[0],
                 Pk = 0,
                 Id = int.Parse(words[2]),
-                LastReadChapterId = int.Parse(words[3]),
-                Title = words[4]
+                LastReadChapterId = int.Parse(words[3])
             };
 
             return story;

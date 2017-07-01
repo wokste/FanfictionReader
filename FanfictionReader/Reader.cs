@@ -29,14 +29,14 @@ namespace FanfictionReader {
                 if (value < 0)
                     value = 0;
 
-                if (value > _story.ChapterCount)
-                    value = _story.ChapterCount;
+                if (value > _story.MetaData.ChapterCount)
+                    value = _story.MetaData.ChapterCount;
 
                 if (_story.LastReadChapterId == value)
                     return;
 
                 _story.LastReadChapterId = value;
-                _storyController.SaveStory(_story);
+                _storyController.UpdateStoryUserData(_story);
                 OnStoryUpdate?.Invoke(_story);
                 var task = RefreshPageAsync();
             }
@@ -49,11 +49,9 @@ namespace FanfictionReader {
             _chapterCache = new ChapterCache(conn);
         }
 
-        internal Task SaveStoryAsync(Story story) {
-            
-            var storyClone = story.Clone() as Story;
-            OnStoryUpdate?.Invoke(storyClone);
-            return Task.Run(() => _storyController.SaveStory(storyClone));
+        internal Task InsertStoryAsync(Story story) {
+            OnStoryUpdate?.Invoke(story);
+            return Task.Run(() => _storyController.InsertStory(story));
         }
 
         internal void LoadLastStory() {
@@ -67,12 +65,8 @@ namespace FanfictionReader {
         }
 
         private async Task RefreshPageAsync() {
-            var story = _story.Clone() as Story;
-
             var page = new HtmlTemplate();
-            page.Chapter = await GetChapterAsync(story, story.LastReadChapterId + 1);
-            await SaveStoryAsync(story);
-
+            page.Chapter = await GetChapterAsync(_story, _story.LastReadChapterId + 1);
             OnPageRender?.Invoke(page);
         }
 
@@ -82,14 +76,12 @@ namespace FanfictionReader {
 
         private Chapter GetChapter(Story story, int chapterId) {
             var storyParser = new FictionpressStoryParser();
-            _storyController.SaveStory(story);
 
             var chapter = _chapterCache.GetChapterIfExists(story, chapterId);
             if (chapter != null)
                 return chapter;
             try {
                 chapter = storyParser.GetChapter(story, chapterId);
-                storyParser.UpdateMeta(story);
                 _chapterCache.SaveChapter(chapter);
                 return chapter;
             } catch (WebException ex) {
@@ -100,6 +92,30 @@ namespace FanfictionReader {
                     Title = "Error"
                 };
                 return chapter;
+            }
+        }
+
+        private Task UpdateMetaAsync() {
+            return Task.Run(() => UpdateMeta());
+        }
+
+        public void UpdateMeta() {
+            foreach (var story in _storyController.GetStoryList()) {
+                var storyParser = new FictionpressStoryParser();
+                
+                try {
+                    var meta = storyParser.GetMeta(story);
+
+                    if (meta != null) {
+                        story.MetaData = meta;
+                        _storyController.UpdateStoryMeta(story);
+                    }
+
+                    
+                } catch (WebException ex) {
+                    Console.WriteLine(ex.Message);
+                }
+                
             }
         }
     }
