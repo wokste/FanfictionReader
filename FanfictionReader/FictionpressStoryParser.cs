@@ -104,10 +104,10 @@ namespace FanfictionReader {
                     meta.MinimumAge = TokenToRating(value);
                     return;
                 case "Updated":
-                    meta.UpdateDate = TokenToDate(value);
+                    meta.UpdateDate = TokenToDate(value, DateTime.Now);
                     return;
                 case "Published":
-                    meta.PublishDate = TokenToDate(value);
+                    meta.PublishDate = TokenToDate(value, DateTime.Now);
                     return;
                 default: {
                     
@@ -118,11 +118,11 @@ namespace FanfictionReader {
         
         /// <param name="dateStr">A date in the format "8/25/2015, 8/25, 1h or 12m"</param>
         /// <returns>The date</returns>
-        private DateTime TokenToDate(string dateStr) {
+        public DateTime TokenToDate(string dateStr, DateTime now) {
             var provider = System.Globalization.CultureInfo.InvariantCulture;
             var formats = new[]{ "M/d/yyyy"};
             var postfixes = new Dictionary<string, long> { {"m", TimeSpan.TicksPerMinute}, { "h", TimeSpan.TicksPerHour } };
-            DateTime result = DateTime.Now;
+            DateTime result = now;
 
             // Format 12m, 10h
             foreach (var postfix in postfixes) {
@@ -139,7 +139,7 @@ namespace FanfictionReader {
             }
             
             // Format: 8/25. Appending with current year.
-            if (DateTime.TryParseExact(dateStr + "/" + DateTime.Now.Year, formats, provider, DateTimeStyles.None, out result)) {
+            if (DateTime.TryParseExact(dateStr + "/" + now.Year, formats, provider, DateTimeStyles.None, out result)) {
                 return result;
             }
 
@@ -168,7 +168,7 @@ namespace FanfictionReader {
             }
         }
 
-        private int TokenToInt(string token){
+        public int TokenToInt(string token){
             int i;
             return int.TryParse(token.Replace(",", ""), out i) ? i : 0;
         }
