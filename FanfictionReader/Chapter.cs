@@ -1,9 +1,9 @@
 ﻿namespace FanfictionReader {
-    class Chapter {
-        internal Story Story;
-        internal int ChapterId;
-        internal string Title;
-        internal string HtmlText;
+    public class Chapter {
+        public Story Story;
+        public int ChapterId;
+        public string Title;
+        public string HtmlText;
 
         public bool Valid => (Story != null && ChapterId > 0);
     }

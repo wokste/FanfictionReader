@@ -2,10 +2,10 @@
 using System.Data.SQLite;
 
 namespace FanfictionReader {
-    internal class ChapterCache {
+    public class ChapterCache {
         private readonly SQLiteConnection _conn;
 
-        internal ChapterCache(SQLiteConnection conn) {
+        public ChapterCache(SQLiteConnection conn) {
             _conn = conn;
         }
 
@@ -15,7 +15,7 @@ namespace FanfictionReader {
         /// <param name="story">The story where the chapter is about.</param>
         /// <param name="chapterId">The chapter id of the story.</param>
         /// <returns>A chapter if it is the cache. Null otherwise.</returns>
-        internal Chapter GetChapterIfExists(Story story, int chapterId) {
+        public Chapter GetChapterIfExists(Story story, int chapterId) {
             lock (_conn) {
                 using (var query =
                     new SQLiteCommand("SELECT * FROM Chapter WHERE StoryPk = @StoryPk AND ChapterId = @ChapterId",
@@ -48,7 +48,7 @@ namespace FanfictionReader {
         /// Save a chapter for later usage
         /// </summary>
         /// <param name="chapter">The chapter to be saved</param>
-        internal void SaveChapter(Chapter chapter) {
+        public void SaveChapter(Chapter chapter) {
             if (!chapter.Valid) {
                 return;
             }

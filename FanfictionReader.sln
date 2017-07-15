@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanfictionReader", "FanfictionReader\FanfictionReader.csproj", "{0FC5CF0A-564C-476D-80B8-F2B4DFD32F8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanfictionReaderTests", "FanfictionReaderTests\FanfictionReaderTests.csproj", "{9F461007-6851-4970-A984-3E0A3BCBB37B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0FC5CF0A-564C-476D-80B8-F2B4DFD32F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FC5CF0A-564C-476D-80B8-F2B4DFD32F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FC5CF0A-564C-476D-80B8-F2B4DFD32F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F461007-6851-4970-A984-3E0A3BCBB37B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F461007-6851-4970-A984-3E0A3BCBB37B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F461007-6851-4970-A984-3E0A3BCBB37B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F461007-6851-4970-A984-3E0A3BCBB37B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

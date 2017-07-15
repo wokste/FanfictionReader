@@ -84,7 +84,7 @@ namespace FanfictionReader {
         }
 
         private void refreshMetaToolStripMenuItem_Click(object sender, EventArgs e) {
-            _reader.UpdateMetaAsync();
+            _reader.UpdateMeta();
         }
     }
 }

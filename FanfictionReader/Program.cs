@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 namespace FanfictionReader {
-    internal static class Program {
+    public static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

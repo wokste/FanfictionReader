@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace FanfictionReader {
-    internal class FictionpressStoryParser {
+    public class FictionpressStoryParser {
         private readonly string _host = "fanfiction.net";
 
         private readonly Regex _storyTextRegex = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
@@ -17,7 +17,7 @@ namespace FanfictionReader {
         private readonly Regex _metaDataRegex = new Regex(@"Rated:(.+)");
         private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
 
-        internal Chapter GetChapter(Story story, int chapterId) {
+        public Chapter GetChapter(Story story, int chapterId) {
             string html = GetHtml(story.Id, chapterId);
 
             var match = _storyTextRegex.Match(html);
@@ -39,7 +39,7 @@ namespace FanfictionReader {
         /// </summary>
         /// <param name="story">The story of which the metadata should be updated</param>
         /// <returns>If the MetaData is reetrieved correctly, a StoryMeta object with the information. Null can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
-        internal StoryMeta GetMeta(Story story) {
+        public StoryMeta GetMeta(Story story) {
             string html;
             try {
                 // The metadata is the same for each chapter and chapter 1 always exists.

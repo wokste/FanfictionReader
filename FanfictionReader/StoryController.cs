@@ -4,14 +4,14 @@ using System.Data;
 using System.Data.SQLite;
 
 namespace FanfictionReader {
-    internal class StoryController {
+    public class StoryController {
         private readonly SQLiteConnection _conn;
 
-        internal StoryController(SQLiteConnection conn) {
+        public StoryController(SQLiteConnection conn) {
             _conn = conn;
         }
 
-        internal IList<Story> GetStoryList() {
+        public IList<Story> GetStoryList() {
             var list = new List<Story>();
             lock (_conn) {
                 using (var query = new SQLiteCommand("SELECT * FROM Story", _conn)) {
@@ -26,7 +26,7 @@ namespace FanfictionReader {
             return list;
         }
 
-        internal Story GetStory(long pk) {
+        public Story GetStory(long pk) {
             lock (_conn) {
                 using (var query = new SQLiteCommand("SELECT * FROM Story WHERE PK = @Pk", _conn)) {
                     query.Parameters.AddWithValue("@Pk", pk);
@@ -67,7 +67,7 @@ namespace FanfictionReader {
             return story;
         }
 
-        internal void InsertStory(Story story) {
+        public void InsertStory(Story story) {
             story.AddDate = DateTime.Now;
 
             lock (_conn) {
@@ -87,7 +87,7 @@ namespace FanfictionReader {
             }
         }
 
-        internal void UpdateStoryMeta(Story story) {
+        public void UpdateStoryMeta(Story story) {
 
             var meta = story.MetaData;
             if (meta == null)
@@ -114,7 +114,7 @@ namespace FanfictionReader {
             }
         }
 
-        internal void UpdateStoryUserData(Story story) {
+        public void UpdateStoryUserData(Story story) {
             var userData = story;
             lock (_conn) {
                 using (var query = new SQLiteCommand(@"UPDATE Story

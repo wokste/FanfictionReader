@@ -5,21 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FanfictionReader {
-    class StoryMeta {
-        internal string Title;
+    public class StoryMeta {
+        public string Title;
 
-        internal int AuthorId = 0;
-        internal int ChapterCount = 0;
-        internal int Words = 0;
-        internal bool IsComplete = false;
-        internal int MinimumAge = 5;
-        internal DateTime UpdateDate;
-        internal DateTime PublishDate;
-        internal DateTime MetaCheckDate;
+        public int AuthorId = 0;
+        public int ChapterCount = 0;
+        public int Words = 0;
+        public bool IsComplete = false;
+        public int MinimumAge = 5;
+        public DateTime UpdateDate;
+        public DateTime PublishDate;
+        public DateTime MetaCheckDate;
         
         // TODO: Add the following fields in the database
-        internal int Favs = 0;
-        internal int Follows = 0;
-        internal int Reviews = 0;
+        public int Favs = 0;
+        public int Follows = 0;
+        public int Reviews = 0;
     }
 }

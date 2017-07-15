@@ -5,25 +5,25 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace FanfictionReader {
-    class Reader {
+    public class Reader {
         private readonly StoryController _storyController;
         private readonly ChapterCache _chapterCache;
 
         private Story _story;
         
-        internal Action<Story> OnStoryUpdate;
-        internal Action<Story> OnStoryDelete;
-        internal Action<HtmlTemplate> OnPageRender;
+        public Action<Story> OnStoryUpdate;
+        public Action<Story> OnStoryDelete;
+        public Action<HtmlTemplate> OnPageRender;
 
-        internal Story Story {
+        public Story Story {
             get { return _story; }
             set {
                 _story = value;
-                var task = RefreshPageAsync();
+                RefreshPage();
             }
         }
 
-        internal int LastReadChapterId {
+        public int LastReadChapterId {
             get { return _story.LastReadChapterId; }
             set {
                 if (value < 0)
@@ -38,42 +38,38 @@ namespace FanfictionReader {
                 _story.LastReadChapterId = value;
                 _storyController.UpdateStoryUserData(_story);
                 OnStoryUpdate?.Invoke(_story);
-                var task = RefreshPageAsync();
+                RefreshPage();
             }
         }
 
-        internal Reader() {
+        public Reader() {
             var conn = new SQLiteConnection("URI=file:D:/AppData/Local/FanfictionReader/Fanfictions.sqlite");
             conn.Open();
             _storyController = new StoryController(conn);
             _chapterCache = new ChapterCache(conn);
         }
 
-        internal Task InsertStoryAsync(Story story) {
+        public void InsertStory(Story story) {
             OnStoryUpdate?.Invoke(story);
-            return Task.Run(() => _storyController.InsertStory(story));
+            _storyController.InsertStory(story);
         }
 
-        internal void LoadLastStory() {
+        public void LoadLastStory() {
             var lastReadStory = Properties.Settings.Default.LastReadFic;
             Story = _storyController.GetStory(lastReadStory);
-            var task = RefreshPageAsync();
+            RefreshPage();
         }
         
-        internal IList<Story> GetStoryList() {
+        public IList<Story> GetStoryList() {
             return _storyController.GetStoryList();
         }
 
-        private async Task RefreshPageAsync() {
+        private  void RefreshPage() {
             var page = new HtmlTemplate();
-            page.Chapter = await GetChapterAsync(_story, _story.LastReadChapterId + 1);
+            page.Chapter =  GetChapter(_story, _story.LastReadChapterId + 1);
             OnPageRender?.Invoke(page);
         }
-
-        private Task<Chapter> GetChapterAsync(Story story, int chapterId) {
-            return Task.Run(() => GetChapter(story, chapterId));
-        }
-
+        
         private Chapter GetChapter(Story story, int chapterId) {
             var storyParser = new FictionpressStoryParser();
 
@@ -95,11 +91,7 @@ namespace FanfictionReader {
             }
         }
 
-        internal Task UpdateMetaAsync() {
-            return Task.Run(() => UpdateMeta());
-        }
-
-        private void UpdateMeta() {
+        public void UpdateMeta() {
             foreach (var story in _storyController.GetStoryList()) {
                 var storyParser = new FictionpressStoryParser();
                 

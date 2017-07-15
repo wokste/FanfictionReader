@@ -4,11 +4,11 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace FanfictionReader {
-    internal partial class NewStoryForm : Form {
+    public partial class NewStoryForm : Form {
         private readonly List<Story> _stories = new List<Story>();
         private readonly Reader _reader;
 
-        internal NewStoryForm(Reader reader) {
+        public NewStoryForm(Reader reader) {
             InitializeComponent();
 
             _reader = reader;
@@ -16,7 +16,7 @@ namespace FanfictionReader {
 
         private void okButton_Click(object sender, EventArgs e) {
             foreach (var story in _stories) {
-                _reader.InsertStoryAsync(story);
+                _reader.InsertStory(story);
             }
 
             Close();
