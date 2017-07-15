@@ -37,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.SortTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.refreshMetaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -78,7 +79,8 @@
             // libraryToolStripMenuItem
             // 
             this.libraryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addStoryToolStripMenuItem});
+            this.addStoryToolStripMenuItem,
+            this.refreshMetaToolStripMenuItem});
             this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
             this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.libraryToolStripMenuItem.Text = "Library";
@@ -87,7 +89,7 @@
             // 
             this.addStoryToolStripMenuItem.Name = "addStoryToolStripMenuItem";
             this.addStoryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.addStoryToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.addStoryToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.addStoryToolStripMenuItem.Text = "New Story";
             this.addStoryToolStripMenuItem.Click += new System.EventHandler(this.AddStoryMenuClick);
             // 
@@ -189,6 +191,14 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Filter";
             // 
+            // refreshMetaToolStripMenuItem
+            // 
+            this.refreshMetaToolStripMenuItem.Name = "refreshMetaToolStripMenuItem";
+            this.refreshMetaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
+            this.refreshMetaToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.refreshMetaToolStripMenuItem.Text = "Refresh Meta";
+            this.refreshMetaToolStripMenuItem.Click += new System.EventHandler(this.refreshMetaToolStripMenuItem_Click);
+            // 
             // ReaderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -229,6 +239,7 @@
         private System.Windows.Forms.TextBox FilterTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox SortTextBox;
+        private System.Windows.Forms.ToolStripMenuItem refreshMetaToolStripMenuItem;
     }
 }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -109,19 +111,36 @@ namespace FanfictionReader {
                 }
             }
         }
-
-
-        /// <param name="dateStr">A date in the format "8/25/2015"</param>
+        
+        /// <param name="dateStr">A date in the format "8/25/2015, 8/25, 1h or 12m"</param>
         /// <returns>The date</returns>
         private DateTime TokenToDate(string dateStr) {
             var provider = System.Globalization.CultureInfo.InvariantCulture;
+            var formats = new[]{ "M/d/yyyy"};
+            var postfixes = new Dictionary<string, long> { {"m", TimeSpan.TicksPerMinute}, { "h", TimeSpan.TicksPerHour } };
+            DateTime result = DateTime.Now;
 
-            var format = "M/d/yyyy";
-            try {
-                return DateTime.ParseExact(dateStr, format, provider);
-            } catch (FormatException) {
-                Console.WriteLine("{0} is not in the correct format {1}.", dateStr, format);
+            // Format 12m, 10h
+            foreach (var postfix in postfixes) {
+                if (dateStr.EndsWith(postfix.Key)) {
+                    var subStr = dateStr.Remove(dateStr.Length - 1, 1);
+                    result -= TimeSpan.FromTicks(postfix.Value * TokenToInt(subStr));
+                    return result;
+                }
             }
+
+            // Format: 8/25/2015
+            if (DateTime.TryParseExact(dateStr, formats, provider, DateTimeStyles.None, out result)) {
+                return result;
+            }
+            
+            // Format: 8/25. Appending with current year.
+            if (DateTime.TryParseExact(dateStr + "/" + DateTime.Now.Year, formats, provider, DateTimeStyles.None, out result)) {
+                return result;
+            }
+
+            Console.WriteLine("Could not format date-time: {0}.", dateStr);
+
             return new DateTime(0);
         }
 

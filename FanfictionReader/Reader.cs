@@ -95,11 +95,11 @@ namespace FanfictionReader {
             }
         }
 
-        private Task UpdateMetaAsync() {
+        internal Task UpdateMetaAsync() {
             return Task.Run(() => UpdateMeta());
         }
 
-        public void UpdateMeta() {
+        private void UpdateMeta() {
             foreach (var story in _storyController.GetStoryList()) {
                 var storyParser = new FictionpressStoryParser();
                 
@@ -115,7 +115,8 @@ namespace FanfictionReader {
                 } catch (WebException ex) {
                     Console.WriteLine(ex.Message);
                 }
-                
+
+                OnStoryUpdate?.Invoke(story);
             }
         }
     }

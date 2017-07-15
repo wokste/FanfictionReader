@@ -60,8 +60,10 @@ namespace FanfictionReader {
         }
 
         private void StoryClicked(object sender, EventArgs e) {
-            var story = storyListBox.SelectedItem as Story;
-            _reader.Story = story;
+            var item = storyListBox.SelectedItem;
+            if (item != null) {
+                _reader.Story = (Story)item;
+            }
         }
 
         private void AddStoryMenuClick(object sender, EventArgs e) {
@@ -79,6 +81,10 @@ namespace FanfictionReader {
 
         private void FilterTextBox_TextChanged(object sender, EventArgs e) {
             UpdateShownStories();
+        }
+
+        private void refreshMetaToolStripMenuItem_Click(object sender, EventArgs e) {
+            _reader.UpdateMetaAsync();
         }
     }
 }
