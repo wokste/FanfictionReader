@@ -17,6 +17,8 @@ namespace FanfictionReader {
         private readonly Regex _metaDataRegex = new Regex(@"Rated:(.+)");
         private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
 
+        private readonly Regex _titleRegex = new Regex(@"<b class='xcontrast_txt'>(.*?)<\/b>");
+
         public Chapter GetChapter(Story story, int chapterId) {
             string html = GetHtml(story.Id, chapterId);
 
@@ -27,7 +29,7 @@ namespace FanfictionReader {
             }
 
             return new Chapter {
-                HtmlText = match.Value,
+                HtmlText = match.Groups[1].Value,
                 ChapterId = chapterId,
                 Story = story,
                 Title = ""
@@ -64,6 +66,8 @@ namespace FanfictionReader {
 
             var meta = new StoryMeta();
 
+            meta.Title = _titleRegex.Match(html).Groups[1].Value;
+
             foreach (var token in tokens) {
                 var split = token.Split(':').Select(s => s.Trim()).ToArray();
                 var key = split[0];
@@ -93,8 +97,8 @@ namespace FanfictionReader {
                 case "Follows":
                     meta.Follows = TokenToInt(value);
                     return;
-                case "Complete":
-                    meta.IsComplete = true;
+                case "Status":
+                    meta.IsComplete = (value == "Complete");
                     return;
                 case "Rated":
                     meta.MinimumAge = TokenToRating(value);

@@ -15,14 +15,14 @@ namespace FanfictionReader.Tests {
 
             var meta = parser.GetMeta(story);
 
-            Assert.AreEqual(meta.Title, "Harry Crow");
-            Assert.AreEqual(meta.ChapterCount, 106);
-            Assert.AreEqual(meta.IsComplete, true);
+            Assert.AreEqual("Harry Crow", meta.Title);
+            Assert.AreEqual(106, meta.ChapterCount);
+            Assert.AreEqual(true, meta.IsComplete);
             Assert.IsTrue(meta.Reviews > 26000);
             Assert.IsTrue(meta.Favs > 17000);
             Assert.IsTrue(meta.Follows > 13000);
 
-            Assert.AreEqual(meta.PublishDate, new DateTime(2012, 6, 5));
+            Assert.AreEqual(new DateTime(2012, 6, 5), meta.PublishDate);
         }
     }
 }
