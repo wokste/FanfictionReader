@@ -92,25 +92,35 @@ namespace FanfictionReader {
 
         public void UpdateMeta() {
             foreach (var story in _storyController.GetStoryList()) {
-                var storyParser = new FictionpressStoryParser();
-
-                try {
-                    var meta = storyParser.GetMeta(story);
-
-                    if (meta != null) {
-                        story.MetaData = meta;
-                        _storyController.UpdateStoryMeta(story);
-                    }
-                }
-                catch (WebException ex) {
-                    Console.WriteLine(ex.Message);
-                }
-                catch (ParseException ex) {
-                    Console.WriteLine(ex.Message);
-                }
-
-                OnStoryUpdate?.Invoke(story);
+                UpdateMetaStory(story);
             }
+        }
+
+        public void UpdateMetaSmart() {
+            foreach (var story in _storyController.GetStoryList()) {
+                
+
+                UpdateMetaStory(story);
+            }
+        }
+
+        public void UpdateMetaStory(Story story) {
+            var storyParser = new FictionpressStoryParser();
+
+            try {
+                var meta = storyParser.GetMeta(story);
+
+                if (meta != null) {
+                    story.MetaData = meta;
+                    _storyController.UpdateStoryMeta(story);
+                }
+            } catch (WebException ex) {
+                Console.WriteLine(ex.Message);
+            } catch (ParseException ex) {
+                Console.WriteLine(ex.Message);
+            }
+
+            OnStoryUpdate?.Invoke(story);
         }
     }
 }

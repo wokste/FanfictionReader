@@ -87,5 +87,19 @@ namespace FanfictionReader {
         private void refreshMetaToolStripMenuItem_Click(object sender, EventArgs e) {
             _reader.UpdateMeta();
         }
+
+        private void firstChapterToolStripMenuItem_Click(object sender, EventArgs e) {
+            _reader.LastReadChapterId = 0;
+        }
+
+        private void lastChapterToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (_reader.Story.MetaData != null) {
+                _reader.LastReadChapterId = _reader.Story.MetaData.ChapterCount - 1;
+            }
+        }
+
+        private void refreshMetaToolStripMenuItem1_Click(object sender, EventArgs e) {
+            _reader.UpdateMetaStory(_reader.Story);
+        }
     }
 }

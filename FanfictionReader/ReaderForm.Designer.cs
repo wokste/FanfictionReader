@@ -28,6 +28,7 @@
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addStoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshMetaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.storyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.previousChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,7 +38,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.SortTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.refreshMetaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshMetaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.firstChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lastChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -93,11 +97,24 @@
             this.addStoryToolStripMenuItem.Text = "New Story";
             this.addStoryToolStripMenuItem.Click += new System.EventHandler(this.AddStoryMenuClick);
             // 
+            // refreshMetaToolStripMenuItem
+            // 
+            this.refreshMetaToolStripMenuItem.Name = "refreshMetaToolStripMenuItem";
+            this.refreshMetaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.F5)));
+            this.refreshMetaToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.refreshMetaToolStripMenuItem.Text = "Refresh Meta";
+            this.refreshMetaToolStripMenuItem.Click += new System.EventHandler(this.refreshMetaToolStripMenuItem_Click);
+            // 
             // storyToolStripMenuItem
             // 
             this.storyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.firstChapterToolStripMenuItem,
             this.previousChapterToolStripMenuItem,
-            this.nextChapterToolStripMenuItem});
+            this.nextChapterToolStripMenuItem,
+            this.lastChapterToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.refreshMetaToolStripMenuItem1});
             this.storyToolStripMenuItem.Name = "storyToolStripMenuItem";
             this.storyToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.storyToolStripMenuItem.Text = "Story";
@@ -106,7 +123,7 @@
             // 
             this.previousChapterToolStripMenuItem.Name = "previousChapterToolStripMenuItem";
             this.previousChapterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
-            this.previousChapterToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.previousChapterToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.previousChapterToolStripMenuItem.Text = "Previous Chapter";
             this.previousChapterToolStripMenuItem.Click += new System.EventHandler(this.PreviousChapterMenuClick);
             // 
@@ -191,13 +208,36 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Filter";
             // 
-            // refreshMetaToolStripMenuItem
+            // refreshMetaToolStripMenuItem1
             // 
-            this.refreshMetaToolStripMenuItem.Name = "refreshMetaToolStripMenuItem";
-            this.refreshMetaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.refreshMetaToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.refreshMetaToolStripMenuItem.Text = "Refresh Meta";
-            this.refreshMetaToolStripMenuItem.Click += new System.EventHandler(this.refreshMetaToolStripMenuItem_Click);
+            this.refreshMetaToolStripMenuItem1.Name = "refreshMetaToolStripMenuItem1";
+            this.refreshMetaToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshMetaToolStripMenuItem1.Size = new System.Drawing.Size(234, 22);
+            this.refreshMetaToolStripMenuItem1.Text = "Refresh Meta";
+            this.refreshMetaToolStripMenuItem1.Click += new System.EventHandler(this.refreshMetaToolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(231, 6);
+            // 
+            // firstChapterToolStripMenuItem
+            // 
+            this.firstChapterToolStripMenuItem.Name = "firstChapterToolStripMenuItem";
+            this.firstChapterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Left)));
+            this.firstChapterToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.firstChapterToolStripMenuItem.Text = "First Chapter";
+            this.firstChapterToolStripMenuItem.Click += new System.EventHandler(this.firstChapterToolStripMenuItem_Click);
+            // 
+            // lastChapterToolStripMenuItem
+            // 
+            this.lastChapterToolStripMenuItem.Name = "lastChapterToolStripMenuItem";
+            this.lastChapterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Right)));
+            this.lastChapterToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.lastChapterToolStripMenuItem.Text = "Last Chapter";
+            this.lastChapterToolStripMenuItem.Click += new System.EventHandler(this.lastChapterToolStripMenuItem_Click);
             // 
             // ReaderForm
             // 
@@ -240,6 +280,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox SortTextBox;
         private System.Windows.Forms.ToolStripMenuItem refreshMetaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem firstChapterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lastChapterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem refreshMetaToolStripMenuItem1;
     }
 }
 
