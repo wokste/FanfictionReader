@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace FanfictionReader {
     public class Reader {

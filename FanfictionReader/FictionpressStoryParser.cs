@@ -5,8 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FanfictionReader {
     public class FictionpressStoryParser {
@@ -60,9 +58,11 @@ namespace FanfictionReader {
                 s => s.Trim().Replace("Sci+Fi", "Sci-Fi")
             );
 
-            var meta = new StoryMeta();
-
-            meta.Title = _titleRegex.Match(html).Groups[1].Value;
+            var meta = new StoryMeta {
+                Title = _titleRegex.Match(html).Groups[1].Value,
+                ChapterCount = 1,
+                UpdateDate = DateTime.MinValue
+            };
 
             foreach (var token in tokens) {
                 var split = token.Split(':').Select(s => s.Trim()).ToArray();
@@ -104,6 +104,11 @@ namespace FanfictionReader {
                     return;
                 case "Published":
                     meta.PublishDate = TokenToDate(value, DateTime.Now);
+
+                    // This means there was no UpdateDate provided in the MetaData
+                    if (meta.UpdateDate == DateTime.MinValue) {
+                        meta.UpdateDate = meta.PublishDate;
+                    }
                     return;
                 default: {
                     
