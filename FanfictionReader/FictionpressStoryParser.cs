@@ -11,6 +11,7 @@ namespace FanfictionReader {
         private readonly string _host = "fanfiction.net";
 
         private readonly Regex _storyTextRegex = new Regex(@"<div[^>]*id='storytext'[^>]*>([\s\S]*?)<\/div>");
+        private readonly Regex _descriptionTextRegex = new Regex(@"<div style='margin-top:2px' class='xcontrast_txt'>([\s\S]*?)<\/div>");
 
         private readonly Regex _metaDataRegex = new Regex(@"Rated:(.+)");
         private readonly Regex _htmlTagRegex = new Regex(@"<[^>]*?>");
@@ -60,6 +61,7 @@ namespace FanfictionReader {
 
             var meta = new StoryMeta {
                 Title = _titleRegex.Match(html).Groups[1].Value,
+                Description = _descriptionTextRegex.Match(html).Groups[1].Value,
                 ChapterCount = 1,
                 UpdateDate = DateTime.MinValue
             };

@@ -22,6 +22,7 @@ namespace FanfictionReader.Tests {
             Assert.IsTrue(meta.Favs > 17000, "Favs count");
             Assert.IsTrue(meta.Follows > 13000, "Follower count");
             Assert.IsTrue(meta.Words > 700000,"Word count");
+            Assert.IsTrue(meta.Description.Length > 50, "Description exists");
 
             Assert.AreEqual(new DateTime(2012, 6, 5), meta.PublishDate);
             Assert.IsTrue(meta.UpdateDate >= new DateTime(2014,6,7), "Update Time");
@@ -34,8 +35,15 @@ namespace FanfictionReader.Tests {
                 Host = "fanfiction.net",
                 Id = 5777316
             };
-
+            
             var meta = parser.GetMeta(story);
+
+            Assert.AreEqual("Hedwig and the Goblet of Fire", meta.Title);
+            Assert.IsTrue(meta.Reviews > 400, "Review count");
+            Assert.IsTrue(meta.Favs > 3000, "Favs count");
+            Assert.IsTrue(meta.Follows > 700, "Follower count");
+            Assert.IsTrue(meta.Words > 3000, "Word count");
+            Assert.AreEqual("Harry uses Hedwig to test the restrictions on the Goblet of Fire. Obviously, they're not good enough to stop the smartest owl in Britain!", meta.Description);
             
             Assert.AreEqual(1, meta.ChapterCount);
             Assert.AreEqual(true, meta.IsComplete);

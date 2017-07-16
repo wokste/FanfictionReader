@@ -17,5 +17,6 @@ namespace FanfictionReader {
         public int Favs = 0;
         public int Follows = 0;
         public int Reviews = 0;
+        public string Description;
     }
 }

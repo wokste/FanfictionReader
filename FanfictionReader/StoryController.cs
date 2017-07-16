@@ -44,6 +44,7 @@ namespace FanfictionReader {
         private Story GetStory(IDataRecord reader) {
             var meta = new StoryMeta {
                 Title = reader.GetString(reader.GetOrdinal("Title")),
+                Description = reader.GetString(reader.GetOrdinal("Description")),
                 AuthorId = reader.GetInt32(reader.GetOrdinal("AuthorId")),
                 ChapterCount = reader.GetInt32(reader.GetOrdinal("ChapterCount")),
                 IsComplete = reader.GetBoolean(reader.GetOrdinal("IsComplete")),
@@ -95,11 +96,12 @@ namespace FanfictionReader {
 
             lock (_conn) {
                 using (var query = new SQLiteCommand(@"UPDATE Story
-                    SET AuthorId = @AuthorId, ChapterCount = @ChapterCount, IsComplete = @IsComplete, MinimumAge = @MinimumAge, Words = @Words, PublishDate = @PublishDate, UpdateDate = @UpdateDate, MetaCheckDate = @MetaCheckDate
+                    SET Title = @Title, Description = @Description, AuthorId = @AuthorId, ChapterCount = @ChapterCount, IsComplete = @IsComplete, MinimumAge = @MinimumAge, Words = @Words, PublishDate = @PublishDate, UpdateDate = @UpdateDate, MetaCheckDate = @MetaCheckDate
                     WHERE Pk = @Pk", _conn)) {
                     query.Parameters.AddWithValue("@Pk", story.Pk);
                     
                     query.Parameters.AddWithValue("@Title", meta.Title);
+                    query.Parameters.AddWithValue("@Description", meta.Description);
                     query.Parameters.AddWithValue("@AuthorId", meta.AuthorId);
                     query.Parameters.AddWithValue("@ChapterCount", meta.ChapterCount);
                     query.Parameters.AddWithValue("@IsComplete", meta.IsComplete);
