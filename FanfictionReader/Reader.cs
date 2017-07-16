@@ -94,7 +94,7 @@ namespace FanfictionReader {
         public void UpdateMeta() {
             foreach (var story in _storyController.GetStoryList()) {
                 var storyParser = new FictionpressStoryParser();
-                
+
                 try {
                     var meta = storyParser.GetMeta(story);
 
@@ -102,9 +102,11 @@ namespace FanfictionReader {
                         story.MetaData = meta;
                         _storyController.UpdateStoryMeta(story);
                     }
-
-                    
-                } catch (WebException ex) {
+                }
+                catch (WebException ex) {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (ParseException ex) {
                     Console.WriteLine(ex.Message);
                 }
 

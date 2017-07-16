@@ -44,6 +44,7 @@ namespace FanfictionReader {
             foreach (var filter in filters) {
                 shownStoryList = shownStoryList.Where(
                     story => (
+                        story.MetaData.Title != null &&
                         story.MetaData.Title.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1
                     )
                 ).ToList();

@@ -76,6 +76,7 @@
     <Compile Include="ChapterCache.cs" />
     <Compile Include="FictionpressStoryParser.cs" />
     <Compile Include="HtmlTemplate.cs" />
+    <Compile Include="ParseException.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="NewStoryForm.cs">
       <SubType>Form</SubType>

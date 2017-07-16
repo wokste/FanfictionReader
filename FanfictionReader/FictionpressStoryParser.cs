@@ -40,20 +40,16 @@ namespace FanfictionReader {
         /// Update the metadata of the story by making a request to the server.
         /// </summary>
         /// <param name="story">The story of which the metadata should be updated</param>
-        /// <returns>If the MetaData is reetrieved correctly, a StoryMeta object with the information. Null can indicate an unresponsive webpage or formatting issues in the HTML page.</returns>
+        /// <returns>If the MetaData is reetrieved correctly, a StoryMeta object with the information.</returns>
+        /// <exception cref="WebException">Something went wrong in downloading the page.</exception>
+        /// <exception cref="ParseException">Something went wrong in processing the page.</exception>
         public StoryMeta GetMeta(Story story) {
-            string html;
-            try {
-                // The metadata is the same for each chapter and chapter 1 always exists.
-                html = GetHtml(story.Id, 1);
-            }
-            catch (WebException) {
-                return null;
-            }
+            // The metadata is the same for each chapter and chapter 1 always exists.
+            var html = GetHtml(story.Id, 1);
 
             var metaDataMatch = _metaDataRegex.Match(html);
             if (!metaDataMatch.Success) {
-                return null;
+                throw new ParseException($"Could not parse metadata from HTML.");
             }
 
             var metaDataString = metaDataMatch.Value;
@@ -143,9 +139,7 @@ namespace FanfictionReader {
                 return result;
             }
 
-            Console.WriteLine("Could not format date-time: {0}.", dateStr);
-
-            return new DateTime(0);
+            throw new ParseException($"Could not format date-time: {dateStr}.");
         }
 
         /// <param name="rateStr"></param>
@@ -164,13 +158,16 @@ namespace FanfictionReader {
                 case "Fiction MA":
                     return 18;
                 default:
-                    return 0;
+                    throw new ParseException($"Could not format rating: {rateStr}.");
             }
         }
 
         public int TokenToInt(string token){
             int i;
-            return int.TryParse(token.Replace(",", ""), out i) ? i : 0;
+            if (int.TryParse(token.Replace(",", ""), out i)){
+                return i;
+            }
+            throw new ParseException($"Could not format integer: { token }.");
         }
 
         private string GetHtml(int storyId, int chapterId) {
