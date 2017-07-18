@@ -24,14 +24,14 @@ namespace FanfictionReader {
             var match = _storyTextRegex.Match(html);
 
             if (!match.Success) {
-                return null;
+                throw new ParseException($"Could not parse story text from HTML for story {story.Pk} chapter {chapterId}.");
             }
 
             return new Chapter {
                 HtmlText = match.Groups[1].Value,
                 ChapterId = chapterId,
                 Story = story,
-                Title = ""
+                ChapterTitle = ""
             };
         }
 

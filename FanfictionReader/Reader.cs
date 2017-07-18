@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Net;
 
@@ -70,30 +69,24 @@ namespace FanfictionReader {
 
         private  void RefreshPage() {
             var page = new HtmlTemplate();
-            page.Chapter =  GetChapter(_story, _story.LastReadChapterId + 1);
+            page.BodyElement =  GetChapter(_story, _story.LastReadChapterId + 1);
             OnPageRender?.Invoke(page);
         }
         
-        private Chapter GetChapter(Story story, int chapterId) {
+        private IHtmlElement GetChapter(Story story, int chapterId) {
             var storyParser = new FictionpressStoryParser();
 
-            var chapter = _chapterCache.GetChapterIfExists(story, chapterId);
+            Chapter chapter = _chapterCache.GetChapterIfExists(story, chapterId);
             if (chapter != null)
                 return chapter;
             try {
                 chapter = storyParser.GetChapter(story, chapterId);
-                if (chapter == null)
-                    return null;
                 _chapterCache.SaveChapter(chapter);
                 return chapter;
-            } catch (WebException ex) {
-                chapter = new Chapter {
-                    ChapterId = 0,
-                    Story = null,
-                    HtmlText = $"<p>{ex.Message}</p>",
-                    Title = "Error"
+            } catch (Exception ex) when (ex is WebException || ex is ParseException) {
+                return new HtmlExceptionWindow {
+                    Exception = ex
                 };
-                return chapter;
             }
         }
 

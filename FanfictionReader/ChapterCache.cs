@@ -37,7 +37,7 @@ namespace FanfictionReader {
             var chapter = new Chapter {
                 Story = story,
                 ChapterId = reader.GetInt32(reader.GetOrdinal("ChapterId")),
-                Title = reader.GetString(reader.GetOrdinal("Title")),
+                ChapterTitle = reader.GetString(reader.GetOrdinal("Title")),
                 HtmlText = reader.GetString(reader.GetOrdinal("HtmlText"))
             };
 
@@ -49,12 +49,13 @@ namespace FanfictionReader {
         /// </summary>
         /// <param name="chapter">The chapter to be saved</param>
         public void SaveChapter(Chapter chapter) {
-            if (!chapter.Valid) {
+            if (chapter == null) {
                 return;
             }
 
-            if (!UpdateChapter(chapter))
+            if (!UpdateChapter(chapter)) {
                 InsertChapter(chapter);
+            }
         }
 
         private void InsertChapter(Chapter chapter) {
@@ -65,7 +66,7 @@ namespace FanfictionReader {
                     , _conn)) {
                     query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
                     query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
-                    query.Parameters.AddWithValue("@Title", chapter.Title);
+                    query.Parameters.AddWithValue("@Title", chapter.ChapterTitle);
                     query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
 
                     query.ExecuteNonQuery();
@@ -81,7 +82,7 @@ namespace FanfictionReader {
 
                     query.Parameters.AddWithValue("@StoryPk", chapter.Story.Pk);
                     query.Parameters.AddWithValue("@ChapterId", chapter.ChapterId);
-                    query.Parameters.AddWithValue("@Title", chapter.Title);
+                    query.Parameters.AddWithValue("@Title", chapter.ChapterTitle);
                     query.Parameters.AddWithValue("@HtmlText", chapter.HtmlText);
 
                     var rows = query.ExecuteNonQuery();

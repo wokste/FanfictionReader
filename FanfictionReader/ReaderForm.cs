@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace FanfictionReader {
     public partial class ReaderForm : Form {
@@ -31,7 +28,7 @@ namespace FanfictionReader {
         }
 
         private void RenderPage(HtmlTemplate page) {
-            storyReader.DocumentText = page.Html;
+            storyReader.DocumentText = page.HtmlText;
             Text = "FanfictionReader - " + page.Title;
         }
 
