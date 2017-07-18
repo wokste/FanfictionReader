@@ -1,21 +1,22 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace FanfictionReader {
     public partial class ReaderForm : Form {
-        private Reader _reader;
-
-        private StoryListView _storyListView;
+        private readonly Reader _reader;
+        private readonly StoryListView _storyListView;
 
         public ReaderForm() {
             InitializeComponent();
 
             _reader = new Reader();
-
             _reader.OnPageRender += RenderPage;
-
             _reader.LoadLastStory();
-
+            
+            sortComboBox.Items.AddRange(Enum.GetValues(typeof(StoryListView.StorySorting)).Cast<object>().ToArray());
+            sortComboBox.SelectedIndex = 0;
+            
             _storyListView = _reader.GetStoryList();
 
             _storyListView.OnSourceChange += StoryListBoxRefresh;
@@ -75,6 +76,15 @@ namespace FanfictionReader {
 
         private void refreshMetaToolStripMenuItem1_Click(object sender, EventArgs e) {
             _reader.UpdateMetaStory(_reader.Story);
+        }
+
+        private void sortComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (sortComboBox.SelectedItem == null || _storyListView == null) {
+                return;
+            }
+            var newSorting = (StoryListView.StorySorting) sortComboBox.SelectedItem;
+
+            _storyListView.Sorting = newSorting;
         }
     }
 }

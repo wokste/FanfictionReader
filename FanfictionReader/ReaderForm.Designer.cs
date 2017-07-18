@@ -40,8 +40,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.SortTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.sortComboBox = new System.Windows.Forms.ComboBox();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -191,8 +191,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.FilterTextBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.SortTextBox, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.sortComboBox, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -221,14 +221,6 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Sort";
             // 
-            // SortTextBox
-            // 
-            this.SortTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SortTextBox.Location = new System.Drawing.Point(53, 31);
-            this.SortTextBox.Name = "SortTextBox";
-            this.SortTextBox.Size = new System.Drawing.Size(139, 20);
-            this.SortTextBox.TabIndex = 1;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -238,6 +230,16 @@
             this.label1.Size = new System.Drawing.Size(44, 28);
             this.label1.TabIndex = 2;
             this.label1.Text = "Filter";
+            // 
+            // sortComboBox
+            // 
+            this.sortComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sortComboBox.FormattingEnabled = true;
+            this.sortComboBox.Location = new System.Drawing.Point(53, 31);
+            this.sortComboBox.Name = "sortComboBox";
+            this.sortComboBox.Size = new System.Drawing.Size(139, 21);
+            this.sortComboBox.TabIndex = 4;
+            this.sortComboBox.SelectedIndexChanged += new System.EventHandler(this.sortComboBox_SelectedIndexChanged);
             // 
             // ReaderForm
             // 
@@ -278,12 +280,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox FilterTextBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox SortTextBox;
         private System.Windows.Forms.ToolStripMenuItem refreshMetaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem firstChapterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lastChapterToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem refreshMetaToolStripMenuItem1;
+        private System.Windows.Forms.ComboBox sortComboBox;
     }
 }
 
