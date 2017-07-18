@@ -72,7 +72,7 @@ namespace FanfictionReader {
 
         private void lastChapterToolStripMenuItem_Click(object sender, EventArgs e) {
             if (_reader.Story.MetaData != null) {
-                _reader.LastReadChapterId = _reader.Story.MetaData.ChapterCount - 1;
+                _reader.LastReadChapterId = _reader.Story.MetaData.ChapterCount;
             }
         }
 

@@ -55,20 +55,75 @@ namespace FanfictionReader {
         }
 
         public IList GetList() {
-            var shownStoryList = _storyList;
+            var list = _storyList;
 
             var filters = Filter.Split(' ').Where(s => s != "");
 
             foreach (var filter in filters) {
-                shownStoryList = shownStoryList.Where(
-                    story => (
-                        story.MetaData.Title != null &&
-                        story.MetaData.Title.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1
-                    )
-                ).ToList();
+                var func = CreateFilter(filter);
+
+                list = list.Where(func).ToList();
             }
 
-            return SortList(shownStoryList).Cast<object>().ToList();
+            return SortList(list).Cast<object>().ToList();
+        }
+
+        private Func<Story, bool> CreateFilter(string filter) {
+            var filterSplit = filter.Split(':');
+
+            // Default when there is no ':' sign
+            if (filterSplit.Length == 1) {
+                return CreateFilter("title", filterSplit[0]);
+            }
+
+            // Negation with a not sign '!'
+            if (filterSplit[0].StartsWith("!")) {
+                var f = CreateFilter(filterSplit[0].Remove(0,1), filterSplit[1]);
+                return (s => !f(s));
+            }
+
+            return CreateFilter(filterSplit[0], filterSplit[1]);
+        }
+
+        private Func<Story, bool> CreateFilter(string filterKey, string filterValue) {
+            var intValue = 0;
+            int.TryParse(filterValue, out intValue);
+
+            switch (filterKey) {
+                case "t":
+                case "title":
+                    return (story =>
+                        story.MetaData != null &&
+                        story.MetaData.Title.IndexOf(filterValue, 0, StringComparison.CurrentCultureIgnoreCase) != -1
+                    );
+                case "w":
+                case "word":
+                case "words":
+                    return (story =>
+                        story.MetaData != null &&
+                        story.MetaData.Words >= intValue
+                    );
+                case "ch":
+                case "chapters":
+                    return (story =>
+                        story.MetaData != null &&
+                        story.MetaData.ChapterCount == intValue
+                    );
+                case "read":
+                    if (filterValue == "") {
+                        intValue = 100;
+                    }
+
+                    return (story =>
+                        story.MetaData != null &&
+                        story.LastReadChapterId * 100.0 / story.MetaData.ChapterCount  >= intValue
+                    );
+                case "started":
+                    return (story =>
+                        story.LastReadChapterId > 0
+                    );
+            }
+            return (story => true);
         }
 
         public IList<Story> SortList(IList<Story> source) {

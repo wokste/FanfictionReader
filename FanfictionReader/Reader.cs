@@ -82,6 +82,8 @@ namespace FanfictionReader {
                 return chapter;
             try {
                 chapter = storyParser.GetChapter(story, chapterId);
+                if (chapter == null)
+                    return null;
                 _chapterCache.SaveChapter(chapter);
                 return chapter;
             } catch (WebException ex) {
