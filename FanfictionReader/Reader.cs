@@ -59,8 +59,8 @@ namespace FanfictionReader {
             RefreshPage();
         }
         
-        public FilteredStoryList GetStoryList() {
-            var filter = new FilteredStoryList(_storyController.GetStoryList());
+        public StoryListView GetStoryList() {
+            var filter = new StoryListView(_storyController.GetStoryList());
             
             OnStoryUpdate += filter.StoryUpdated;
             OnStoryDelete += filter.StoryDeleted;

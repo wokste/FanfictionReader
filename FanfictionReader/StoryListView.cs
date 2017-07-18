@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 
 namespace FanfictionReader {
-    public class FilteredStoryList : IListSource {
+    public class StoryListView {
         private string _filter = "";
         private StorySorting _sorting = StorySorting.Title;
 
@@ -34,11 +34,9 @@ namespace FanfictionReader {
 
         public Action OnSourceChange;
 
-        public FilteredStoryList(IList<Story> storyList) {
+        public StoryListView(IList<Story> storyList) {
             _storyList = storyList;
         }
-
-        public bool ContainsListCollection => (_storyList != null);
 
         public void StoryUpdated(Story story) {
             if (!_storyList.Contains(story)) {

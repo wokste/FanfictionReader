@@ -8,8 +8,7 @@ namespace FanfictionReader {
     public partial class ReaderForm : Form {
         private Reader _reader;
 
-        private FilteredStoryList _storyListSource;
-        //private DataView _storyListSource;
+        private StoryListView _storyListView;
 
         public ReaderForm() {
             InitializeComponent();
@@ -20,9 +19,15 @@ namespace FanfictionReader {
 
             _reader.LoadLastStory();
 
-            _storyListSource = _reader.GetStoryList();
-            storyListBox.DataSource = _storyListSource;
-            _storyListSource.OnSourceChange += () => { storyListBox.Refresh(); };
+            _storyListView = _reader.GetStoryList();
+
+            _storyListView.OnSourceChange += StoryListBoxRefresh;
+            StoryListBoxRefresh();
+        }
+
+        private void StoryListBoxRefresh() {
+            storyListBox.DataSource = _storyListView.GetList();
+            storyListBox.Refresh();
         }
 
         private void RenderPage(HtmlTemplate page) {
@@ -51,7 +56,7 @@ namespace FanfictionReader {
         }
 
         private void FilterTextBox_TextChanged(object sender, EventArgs e) {
-            _storyListSource.Filter = FilterTextBox.Text;
+            _storyListView.Filter = FilterTextBox.Text;
 
             // TODO: this should be removed
             storyListBox.Refresh();
