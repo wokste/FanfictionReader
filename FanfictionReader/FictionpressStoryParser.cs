@@ -80,7 +80,7 @@ namespace FanfictionReader {
 
         private void UpdateMetaValue(StoryMeta meta, string key, string value) {
             switch (key) {
-                case "Chapters":
+                case "ChapterCount":
                     meta.ChapterCount = TokenToInt(value);
                     return;
                 case "Words":

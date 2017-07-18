@@ -59,8 +59,13 @@ namespace FanfictionReader {
             RefreshPage();
         }
         
-        public IList<Story> GetStoryList() {
-            return _storyController.GetStoryList();
+        public FilteredStoryList GetStoryList() {
+            var filter = new FilteredStoryList(_storyController.GetStoryList());
+            
+            OnStoryUpdate += filter.StoryUpdated;
+            OnStoryDelete += filter.StoryDeleted;
+
+            return filter;
         }
 
         private  void RefreshPage() {
@@ -99,7 +104,6 @@ namespace FanfictionReader {
         public void UpdateMetaSmart() {
             foreach (var story in _storyController.GetStoryList()) {
                 
-
                 UpdateMetaStory(story);
             }
         }

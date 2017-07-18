@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 using System.Linq;
 
@@ -7,7 +8,8 @@ namespace FanfictionReader {
     public partial class ReaderForm : Form {
         private Reader _reader;
 
-        private IList<Story> _storyList;
+        private FilteredStoryList _storyListSource;
+        //private DataView _storyListSource;
 
         public ReaderForm() {
             InitializeComponent();
@@ -15,44 +17,12 @@ namespace FanfictionReader {
             _reader = new Reader();
 
             _reader.OnPageRender += RenderPage;
-            _reader.OnStoryUpdate += StoryUpdated;
-            _reader.OnStoryDelete += StoryDeleted;
 
             _reader.LoadLastStory();
 
-            _storyList = _reader.GetStoryList();
-            UpdateShownStories();
-        }
-
-        private void StoryUpdated(Story story) {
-            if (!_storyList.Contains(story)) {
-                _storyList.Add(story);
-            }
-            UpdateShownStories();
-        }
-        
-        private void StoryDeleted(Story story) {
-            _storyList.Remove(story);
-            UpdateShownStories();
-        }
-
-        private void UpdateShownStories() {
-            IList<Story> shownStoryList = _storyList;
-
-            var filters = FilterTextBox.Text.Split(' ').Where(s => s != "");
-
-            foreach (var filter in filters) {
-                shownStoryList = shownStoryList.Where(
-                    story => (
-                        story.MetaData.Title != null &&
-                        story.MetaData.Title.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1
-                    )
-                ).ToList();
-            }
-            
-            _storyList = _storyList.OrderBy(s => s.MetaData.Title).ToList();
-
-            storyListBox.DataSource = shownStoryList;
+            _storyListSource = _reader.GetStoryList();
+            storyListBox.DataSource = _storyListSource;
+            _storyListSource.OnSourceChange += () => { storyListBox.Refresh(); };
         }
 
         private void RenderPage(HtmlTemplate page) {
@@ -81,7 +51,10 @@ namespace FanfictionReader {
         }
 
         private void FilterTextBox_TextChanged(object sender, EventArgs e) {
-            UpdateShownStories();
+            _storyListSource.Filter = FilterTextBox.Text;
+
+            // TODO: this should be removed
+            storyListBox.Refresh();
         }
 
         private void refreshMetaToolStripMenuItem_Click(object sender, EventArgs e) {
